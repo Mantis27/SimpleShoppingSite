@@ -1,0 +1,36 @@
+/*nav {
+    height: 100%;
+    width: 10%;
+    position: sticky;
+    top: 0;
+    background: yellow;
+}*/
+.menu {
+    display: block;
+    float: left;
+    text-align: center;
+    height: 100vh;
+    width: 10vw;
+    background-color: lightblue;
+    color: black;
+}
+.shoppinglist {
+    border: 20px;
+    height: auto;
+    width: auto;
+    text-align: right;
+    /*background-color: lightblue;*/
+    transition: all 0.5s;
+}
+/*.shoppinglist:hover {
+    background-color: lightcoral;
+}*/
+.longtext {
+    display: none;
+}
+.shoppinglist:hover .shorttext {
+    display: none;
+}
+.shoppinglist:hover .longtext {
+    display: block;
+}

@@ -90,14 +90,9 @@ function ierg4210_prod_insert() {
 
 // TODO: add other functions here to make the whole application complete
 function ierg4210_cat_insert() {
-    // input validation or sanitization
-
     // DB manipulation
     global $db;
     $db = ierg4210_DB();
-
-    // TODO: complete the rest of the INSERT command
-    // Check if form data is valid
     
     if (!preg_match('/^\d*$/', $_POST['catid']))
         throw new Exception("invalid-catid");
@@ -116,13 +111,45 @@ function ierg4210_cat_insert() {
     $q->execute();
     header('Location: admin.php');
     exit();
-
 }
 function ierg4210_cat_edit(){
     
 }
-function ierg4210_cat_delete(){}
-function ierg4210_prod_delete_by_catid(){}
+function ierg4210_cat_delete(){
+    // DB manipulation
+    global $db;
+    $db = ierg4210_DB();
+    
+    if (!preg_match('/^\d*$/', $_POST['catid']))
+        throw new Exception("invalid-catid");
+    $_POST['catid'] = (int) $_POST['catid']; // turn into int
+
+    $sql="DELETE FROM categories WHERE catid = ?";
+    $q = $db->prepare($sql);
+
+    $catid = $_POST["catid"];
+
+    $q->bindParam(1, $catid);
+    $q->execute();
+    header('Location: admin.php');
+    exit();
+}
+function ierg4210_prod_delete_by_catid(){
+    global $db;
+    $db = ierg4210_DB();
+    
+    if (!preg_match('/^\d*$/', $_POST['pid']))
+        throw new Exception("invalid-pid");
+    $_POST['pid'] = (int) $_POST['pid']; // turn into int
+
+    $sql="DELETE FROM products WHERE pid = ?";
+    $q = $db->prepare($sql);
+    $pid = $_POST["pid"];
+    $q->bindParam(1, $pid);
+    $q->execute();
+    header('Location: admin.php');
+    exit();
+}
 function ierg4210_prod_fetchAll(){}
 function ierg4210_prod_fetchOne(){}
 function ierg4210_prod_edit(){}

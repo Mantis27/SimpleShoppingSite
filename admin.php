@@ -33,12 +33,28 @@ foreach ($actionList as $act){
         </form>
     </fieldset>
     <fieldset>
+        <legend>Delete Product</legend>
+        <form id="prod_delete_by_catid" method="POST" action="admin-process.php?action=prod_delete_by_catid" enctype="multipart/form-data">
+            <label for="prod_id"> Product ID *</label>
+            <div> <input id="prod_id" type="number" name="pid" required="required" min="1"/> </div>
+            <input type="submit" value="Submit"/>
+        </form>
+    </fieldset>
+    <fieldset>
         <legend>New Catagory</legend>
         <form id="cat_insert" method="POST" action="admin-process.php?action=cat_insert" enctype="multipart/form-data">
             <label for="cat_id"> Cat ID *</label>
-            <div> <input id="cat_id" type="number" name="catid" required="required" min="0"/> </div>
+            <div> <input id="cat_id" type="number" name="catid" required="required" min="1"/> </div>
             <label for="cat_name"> Cat Name *</label>
             <div> <input id="cat_name" type="text" name="name" required="required" pattern="^[\w\-]+$"/> </div>
+            <input type="submit" value="Submit"/>
+        </form>
+    </fieldset>
+    <fieldset>
+        <legend>Delete Catagory</legend>
+        <form id="cat_delete" method="POST" action="admin-process.php?action=cat_delete" enctype="multipart/form-data">
+            <label for="cat_id"> Category *</label>
+            <div> <select id="cat_id" name="catid"><?php echo $options; ?></select></div>
             <input type="submit" value="Submit"/>
         </form>
     </fieldset>

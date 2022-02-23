@@ -4,7 +4,7 @@ This is a project for IERG4210 by HO Tsz Ngong (1155124840).
 The directory structure would be as following (as in phase 1):
 
 ```bash
-Project
+var/www/html
 ├── Catagory1
 │   ├── Items
 │   │   ├── (id).html
@@ -15,7 +15,7 @@ Project
 │   └── Item_Photo
 │       └── (id).img
 ├── README.md
-├── main.html
+├── index.html
 └── style1.css
 ```
 
@@ -23,6 +23,6 @@ The project folder should be put in root directory. Such that:
 
 ```bash
 Root
-├── Project
-│   ├── (Catagory1, Resources, README.md, main.html, style1.css, etc)
+├── var/www/html
+│   ├── (Catagory1, Resources, README.md, index.html, style1.css, etc)
 ```

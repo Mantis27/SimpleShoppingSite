@@ -23,7 +23,6 @@ function ierg4210_cat_fetchall() {
     // DB manipulation
     global $db;
     $db = ierg4210_DB();
-    //$db->query("INSERT INTO CATEGORIES VALUES (NULL, 'Phone');");
 
     $q = $db->prepare("SELECT * FROM categories LIMIT 100;");
     if ($q->execute())
@@ -47,6 +46,9 @@ function ierg4210_prod_insert() {
     //$_POST['price1'] = floatval($_POST['price1']);
     if (!preg_match('/^[\w\-\,\. ]+$/', $_POST['description']))
         throw new Exception("invalid-text");
+    if (!preg_match('/^[\d\- ]+$/', $_POST['stock']))
+        throw new Exception("invalid-stock");
+    $_POST['stock'] = (int) $_POST['stock'];
     
     if ($_FILES["file1"]["error"] == 0
         && $_FILES["file1"]["type"] == "image/jpeg"
@@ -56,13 +58,15 @@ function ierg4210_prod_insert() {
         $name = $_POST["name"];
         $price = $_POST["price"];
         $desc = $_POST["description"];
+        $stock = $_POST["stock"];
         
-        $sql="INSERT INTO products (catid, name, price, description) VALUES (?, ?, ?, ?)";
+        $sql="INSERT INTO products (catid, name, price, description, stock) VALUES (?, ?, ?, ?, ?)";
         $q = $db->prepare($sql);
         $q->bindParam(1, $catid);
         $q->bindParam(2, $name);
         $q->bindParam(3, $price);
         $q->bindParam(4, $desc);
+        $q->bindParam(5, $stock);
         $q->execute();
         $lastId = $db->lastInsertId();
         
@@ -87,20 +91,15 @@ function ierg4210_cat_insert() {
     global $db;
     $db = ierg4210_DB();
     
-    if (!preg_match('/^\d*$/', $_POST['catid']))
-        throw new Exception("invalid-catid");
-    $_POST['catid'] = (int) $_POST['catid']; // turn into int
     if (!preg_match('/^[\w\- ]+$/', $_POST['name']))
         throw new Exception("invalid-name");
 
-    $sql="INSERT INTO categories (catid, name) VALUES (?, ?)";
+    $sql="INSERT INTO categories (catid, name) VALUES (NULL, ?)";
     $q = $db->prepare($sql);
 
-    $catid = $_POST["catid"];
     $name = $_POST["name"];
 
-    $q->bindParam(1, $catid);
-    $q->bindParam(2, $name);
+    $q->bindParam(1, $name);
     $q->execute();
     header('Location: admin.php');
     exit();
@@ -139,7 +138,7 @@ function ierg4210_prod_delete_by_catid(){
     $q = $db->prepare($sql);
     $pid = $_POST["pid"];
     $q->bindParam(1, $pid);
-    if (unlink("/Resources/Item_Photo/".$pid.".jpg")) {
+    if (unlink("/var/www/html/Resources/Item_Photo/".$pid.".jpg")) {
         $q->execute();
         header('Location: admin.php');
         exit();
@@ -149,6 +148,9 @@ function ierg4210_prod_delete_by_catid(){
 function ierg4210_prod_fetchAll(){
     global $db;
     $db = ierg4210_DB();
+    $q = $db->prepare("SELECT * FROM products;");
+    if ($q->execute())
+        return $q->fetchAll();
 }
 function ierg4210_prod_fetchOne(){}
 function ierg4210_prod_edit(){

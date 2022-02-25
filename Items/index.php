@@ -9,12 +9,13 @@
         <?php 
             $db = new PDO('sqlite:/var/www/cart.db'); 
             $prod_pid = $_REQUEST["item"];
-            $query_all = $db->query("SELECT catid, name, price, description FROM products WHERE pid = $prod_pid;");
+            $query_all = $db->query("SELECT catid, name, price, description, stock FROM products WHERE pid = $prod_pid;");
             $head_res = $query_all->fetch();
             $prod_catid = $head_res["CATID"];
             $prod_name = $head_res["NAME"];
             $prod_price = $head_res["PRICE"];
             $prod_desc = $head_res["DESCRIPTION"];
+            $prod_stock = $head_res["STOCK"];
         ?>
     </head>
     <body>
@@ -64,7 +65,7 @@
                         <img src="/Resources/Item_Photo/<?php echo $prod_pid; ?>.jpg" class="largepic"/>
                         <h3><?php echo $prod_name; ?></h3>
                         <p>Price: $<?php echo $prod_price; ?></p>
-                        <p>Stock: 7</p>
+                        <p>Stock: <?php echo $prod_stock; ?></p>
                         <button>Add to Cart</button>
                         <hr>
                         <p><?php echo $prod_desc; ?></p>

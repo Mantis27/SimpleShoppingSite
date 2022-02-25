@@ -6,12 +6,6 @@ $options = '';
 foreach ($res as $value){
     $options .= '<option value="'.$value["CATID"].'"> '.$value["NAME"].' </option>';
 }
-
-$actionList = array("prod_insert", "prod_delete_by_catid", "prod_fetchAll", "prod_fetchOne", "prod_edit", "prod_delete");
-$actions = '';
-foreach ($actionList as $act){
-    $actions .= '<option value="'.$act.'"> '.$act.' </option>';
-}
 ?>
 
 <html>
@@ -22,7 +16,25 @@ foreach ($actionList as $act){
             <label for="prod_catid"> Category *</label>
             <div> <select id="prod_catid" name="catid"><?php echo $options; ?></select></div>
             <label for="prod_name"> Name *</label>
-            <div> <input id="prod_name" type="text" name="name" required="required" pattern="^[\w\-]+$"/></div>
+            <div> <input id="prod_name" type="text" name="name" required="required" pattern="^[\w\- ]+$"/></div>
+            <label for="prod_price"> Price *</label>
+            <div> <input id="prod_price" type="text" name="price" required="required" pattern="^\d+\.?\d*$"/></div>
+            <label for="prod_desc"> Description *</label>
+            <div> <input id="prod_desc" type="text" name="description"/> </div>
+            <label for="prod_image"> Image * </label>
+            <div> <input id="prod_image" type="file" name="file1" required="true" accept="image/jpeg"/> </div>
+            <input type="submit" value="Submit"/>
+        </form>
+    </fieldset>
+    <fieldset>
+        <legend>Product Edit</legend>
+        <form id="prod_edit" method="POST" action="admin-process.php?action=prod_edit" enctype="multipart/form-data">
+            <label for="prod_id"> Product ID *</label>
+            <div> <input id="prod_id" type="number" name="pid" required="required" min="1"/> </div>
+            <label for="prod_catid"> Category *</label>
+            <div> <select id="prod_catid" name="catid"><?php echo $options; ?></select></div>
+            <label for="prod_name"> Name *</label>
+            <div> <input id="prod_name" type="text" name="name" required="required" pattern="^[\w\- ]+$"/></div>
             <label for="prod_price"> Price *</label>
             <div> <input id="prod_price" type="text" name="price" required="required" pattern="^\d+\.?\d*$"/></div>
             <label for="prod_desc"> Description *</label>

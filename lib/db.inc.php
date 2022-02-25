@@ -90,7 +90,7 @@ function ierg4210_cat_insert() {
     // DB manipulation
     global $db;
     $db = ierg4210_DB();
-    
+
     if (!preg_match('/^[\w\- ]+$/', $_POST['name']))
         throw new Exception("invalid-name");
 
@@ -105,7 +105,27 @@ function ierg4210_cat_insert() {
     exit();
 }
 function ierg4210_cat_edit(){
-    
+    // Mainly update name
+    global $db;
+    $db = ierg4210_DB();
+
+    if (!preg_match('/^\d*$/', $_POST['catid']))
+        throw new Exception("invalid-catid");
+    $_POST['catid'] = (int) $_POST['catid']; // turn into int
+    if (!preg_match('/^[\w\- ]+$/', $_POST['name']))
+        throw new Exception("invalid-name");
+
+    $sql="UPDATE categories SET name = ? WHERE catid = ?";
+    $q = $db->prepare($sql);
+
+    $name = $_POST["name"];
+    $catid = $_POST["catid"];
+
+    $q->bindParam(1, $name);
+    $q->bindParam(2, $catid);
+    $q->execute();
+    header('Location: admin.php');
+    exit();
 }
 function ierg4210_cat_delete(){
     // DB manipulation
@@ -143,6 +163,7 @@ function ierg4210_prod_delete_by_catid(){
         header('Location: admin.php');
         exit();
     }
+    header('Location: admin.php');
     exit();
 }
 function ierg4210_prod_fetchAll(){
@@ -170,6 +191,9 @@ function ierg4210_prod_edit(){
         throw new Exception("invalid-price");
     if (!preg_match('/^[\w\-\,\. ]+$/', $_POST['description']))
         throw new Exception("invalid-text");
+    if (!preg_match('/^[\d\- ]+$/', $_POST['stock']))
+        throw new Exception("invalid-stock");
+    $_POST['stock'] = (int) $_POST['stock'];
 
     $sql="DELETE FROM products WHERE pid = ?";
     $q = $db->prepare($sql);
@@ -186,14 +210,16 @@ function ierg4210_prod_edit(){
             $name = $_POST["name"];
             $price = $_POST["price"];
             $desc = $_POST["description"];
+            $stock = $_POST["stock"];
             
-            $sql="INSERT INTO products (pid, catid, name, price, description) VALUES (?, ?, ?, ?, ?)";
+            $sql="INSERT INTO products (pid, catid, name, price, description, stock) VALUES (?, ?, ?, ?, ?, ?)";
             $q = $db->prepare($sql);
             $q->bindParam(1, $pid);
             $q->bindParam(2, $catid);
             $q->bindParam(3, $name);
             $q->bindParam(4, $price);
             $q->bindParam(5, $desc);
+            $q->bindParam(6, $stock);
             $q->execute();
             
             // Note: Take care of the permission of destination folder (hints: current user is apache)
@@ -211,6 +237,17 @@ function ierg4210_prod_edit(){
     exit();
     
 }
-function ierg4210_prod_delete(){
-
+function ierg4210_prod_delete(){ // no use yet
+    global $db;
+    $db = ierg4210_DB();
+    if (!preg_match('/^\d*$/', $_POST['pid']))
+        throw new Exception("invalid-pid");
+    $_POST['pid'] = (int) $_POST['pid']; // turn into int
+    $sql="DELETE FROM products WHERE pid = ?";
+    $q = $db->prepare($sql);
+    $pid = $_POST["pid"];
+    $q->bindParam(1, $pid);
+    if (unlink("/var/www/html/Resources/Item_Photo/".$pid.".jpg")) {
+        $q->execute(); //detele record
+    }
 }

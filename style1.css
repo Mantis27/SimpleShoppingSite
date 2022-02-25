@@ -29,22 +29,3 @@
     /*background-color: lightgray;*/
     height: auto;
 }
-ul.table{
-    margin:0;
-    padding:0;
-    list-style:none;
-    overflow:auto;
-    height: auto;
-}
-ul.table li{
-    width: 230px;
-    height: 230px;
-    float:left;
-    border:1px solid #CCC;
-    text-align: center;
-}
-ul.table li img{
-    width: 180px;
-    height: 180px;
-}
-.clear{clear:both}

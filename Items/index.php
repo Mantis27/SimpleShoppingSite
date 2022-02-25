@@ -4,11 +4,17 @@
         <!-- Bootstrap framework -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-        <link rel="stylesheet" href="style_cat.css">
+        <link rel="stylesheet" href="style_item.css" >
         <title>IERG4210 Project</title>
         <?php 
             $db = new PDO('sqlite:/var/www/cart.db'); 
-            $currentCat = $_REQUEST["cat"];
+            $prod_pid = $_REQUEST["item"];
+            $query_all = $db->query("SELECT catid, name, price, description FROM products WHERE pid = $prod_pid;");
+            $head_res = $query_all->fetch();
+            $prod_catid = $head_res["CATID"];
+            $prod_name = $head_res["NAME"];
+            $prod_price = $head_res["PRICE"];
+            $prod_desc = $head_res["DESCRIPTION"];
         ?>
     </head>
     <body>
@@ -22,12 +28,12 @@
                             <li>Item1 <input type="text" size="2" value="1"/> @2</li>
                             <li>Item2 <input type="text" size="2" value="1"/> @8</li>
                             <li><button class="checkout">Checkout</button></li>
-                        </ul>
+                        </ul>            
                     </div>
                     <div class="menu">
                         <p>Catagories</p>
                         <ul class="list-group list-unstyled">
-                            <?php
+                        <?php
                                 $query_all = $db->query("SELECT catid, name FROM categories;");
                                 $cat_res = $query_all->fetchAll();
                                 foreach($cat_res as $cat_element) {
@@ -44,31 +50,24 @@
                 <section id="right" class="col-10">
                     <div class="linklist">
                         <p class="linktext">
-                            <a href="/index.php">Main</a> > <a href="#">
-                                <?php 
-                                    $query_all = $db->query("SELECT name FROM categories WHERE catid = $currentCat;");
-                                    $head_res = $query_all->fetch();
-                                    echo $head_res["NAME"];
+                            <a href="/index.html">Main</a> > <a href="/Catagory/index.php?cat=<?php echo htmlspecialchars($prod_catid) ?>">
+                            <?php 
+                                    $query_all = $db->query("SELECT name FROM categories WHERE catid = $prod_catid;");
+                                    $headcat_res = $query_all->fetch();
+                                    echo $headcat_res["NAME"];
                                 ?>
-                            </a>
+                            </a> > <a href="#"><?php echo $prod_name; ?></a>
                         </p>       
                     </div>
 
-                    <div class="itemlist">
-                        <ul class="itemtable">
-                            <?php
-                                $query_all = $db->query("SELECT pid, name, price FROM products WHERE catid = $currentCat;");
-                                $prod_res = $query_all->fetchAll();
-                                foreach($prod_res as $prod_element) {
-                                    $pid = $prod_element["PID"];
-                                    $prod_name = $prod_element["NAME"];
-                                    $prod_price = $prod_element["PRICE"];
-                                    ?>
-                                    <li><a href="/Items/index.php?item=<?php echo htmlspecialchars($pid) ?>"><img src="/Resources/Item_Photo/<?php echo $pid; ?>.jpg"/><br><?php echo $prod_name; ?></a><br>$<?php echo $prod_price; ?> <button>Add</button></li>
-                                    <?php
-                                }
-                            ?>
-                        </ul>
+                    <div class="itemdetail">
+                        <img src="/Resources/Item_Photo/<?php echo $prod_pid; ?>.jpg" class="largepic"/>
+                        <h3><?php echo $prod_name; ?></h3>
+                        <p>Price: $<?php echo $prod_price; ?></p>
+                        <p>Stock: 7</p>
+                        <button>Add to Cart</button>
+                        <hr>
+                        <p><?php echo $prod_desc; ?></p>
                     </div>
                 </section>
     

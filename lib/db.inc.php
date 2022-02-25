@@ -45,7 +45,7 @@ function ierg4210_prod_insert() {
     if (!preg_match('/^[\d\.]+$/', $_POST['price']))
         throw new Exception("invalid-price");
     //$_POST['price1'] = floatval($_POST['price1']);
-    if (!preg_match('/^[\w\- ]+$/', $_POST['description']))
+    if (!preg_match('/^[\w\-\,\. ]+$/', $_POST['description']))
         throw new Exception("invalid-text");
     
     if ($_FILES["file1"]["error"] == 0
@@ -166,31 +166,26 @@ function ierg4210_prod_edit(){
         throw new Exception("invalid-name");
     if (!preg_match('/^[\d\.]+$/', $_POST['price']))
         throw new Exception("invalid-price");
-    if (!preg_match('/^[\w\- ]+$/', $_POST['description']))
-        throw new Exception("invalid-textt");
+    if (!preg_match('/^[\w\-\,\. ]+$/', $_POST['description']))
+        throw new Exception("invalid-text");
 
     $sql="DELETE FROM products WHERE pid = ?";
     $q = $db->prepare($sql);
     $pid = $_POST["pid"];
     $q->bindParam(1, $pid);
-    if (unlink("/Resources/Item_Photo/".$pid.".jpg")) {
-        $q->execute();
+    if (unlink("/var/www/html/Resources/Item_Photo/".$pid.".jpg")) {
+        $q->execute(); //detele record
 
-        $sql="INSERT INTO products (catid, name, price, description) VALUES (?, ?, ?, ?)";
-        $q = $db->prepare($sql);
-    
-        // Copy the uploaded file to a folder which can be publicly accessible at incl/img/[pid].jpg
         if ($_FILES["file"]["error"] == 0
-            && $_FILES["file"]["type"] == "image/jpeg"
-            && mime_content_type($_FILES["file"]["tmp_name"]) == "image/jpeg"
-            && $_FILES["file"]["size"] < 5000000) {
-    
-    
+        && $_FILES["file"]["type"] == "image/jpeg"
+        && mime_content_type($_FILES["file"]["tmp_name"]) == "image/jpeg"
+        && $_FILES["file"]["size"] < 5000000) {
             $catid = $_POST["catid"];
             $name = $_POST["name"];
             $price = $_POST["price"];
             $desc = $_POST["description"];
-            $sql="INSERT INTO products (pid, catid, name, price, description) VALUES (?, ?, ?, ?, ?);";
+            
+            $sql="INSERT INTO products (pid, catid, name, price, description) VALUES (?, ?, ?, ?, ?)";
             $q = $db->prepare($sql);
             $q->bindParam(1, $pid);
             $q->bindParam(2, $catid);
@@ -198,20 +193,21 @@ function ierg4210_prod_edit(){
             $q->bindParam(4, $price);
             $q->bindParam(5, $desc);
             $q->execute();
-    
+            
             // Note: Take care of the permission of destination folder (hints: current user is apache)
-            if (move_uploaded_file($_FILES["file"]["tmp_name"], "/Resources/Item_Photo/" . $pid . ".jpg")) {
+            if (move_uploaded_file($_FILES["file"]["tmp_name"], "/var/www/html/Resources/Item_Photo/" . $pid . ".jpg")) {
                 // redirect back to original page; you may comment it during debug
                 header('Location: admin.php');
                 exit();
             }
         }
-        // Only an invalid file will result in the execution below
-        // To replace the content-type header which was json and output an error message
-        header('Content-Type: text/html; charset=utf-8');
-        echo 'Invalid file detected. <br/><a href="javascript:history.back();">Back to admin panel.</a>';
-        exit();
     }
+    // Only an invalid file will result in the execution below
+    // To replace the content-type header which was json and output an error message
+    header('Content-Type: text/html; charset=utf-8');
+    echo 'Invalid file detected. <br/><a href="javascript:history.back();">Back to admin panel.</a>';
+    exit();
+    
 }
 function ierg4210_prod_delete(){
 

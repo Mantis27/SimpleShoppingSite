@@ -22,6 +22,7 @@ The directory structure would be as following (as in phase 2):
 │       └── (id).img
 ├── README.md
 ├── admin-process.php
+├── admin-script.js
 ├── admin.php
 ├── index.php
 └── style1.css

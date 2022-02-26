@@ -17,7 +17,7 @@ foreach ($prod_res as $prod_value){
 
 <html>
     <h2>Admin Page</h2>
-    <fieldset>
+    <fieldset id="field_prod_insert">
         <legend>Product Insert</legend>
         <form id="prod_insert" method="POST" action="admin-process.php?action=prod_insert" enctype="multipart/form-data">
             <label for="prod_catid"> Category *</label>
@@ -30,12 +30,13 @@ foreach ($prod_res as $prod_value){
             <div> <textarea id="prod_desc" type="text" name="description"></textarea> </div>
             <label for="prod_stock"> Inventory *</label>
             <div> <input id="prod_stock" type="number" name="stock" required="required" min="1"/> </div>
-            <label for="prod_image"> Image * </label>
-            <div> <input id="prod_image" type="file" name="file1" required="true" accept="image/jpeg"/> </div>
+            <label for="prod_image_insert"> Image (Press the button, OR Drag-and-Drop your file here) *</label>
+            <div> <input id="prod_image_insert" type="file" name="file1" required="true" accept="image/jpeg" onchange="handleFiles(this)" onclick="this.value=null;"/> </div>
+            <div> <img id="target_insert"/> </div> 
             <input type="submit" value="Submit"/>
         </form>
     </fieldset>
-    <fieldset>
+    <fieldset id="field_prod_edit">
         <legend>Product Edit</legend>
         <form id="prod_edit" method="POST" action="admin-process.php?action=prod_edit" enctype="multipart/form-data">
             <label for="prod_id"> Product ID *</label>
@@ -50,8 +51,9 @@ foreach ($prod_res as $prod_value){
             <div> <textarea id="prod_desc" type="text" name="description"></textarea> </div>
             <label for="prod_stock"> Inventory *</label>
             <div> <input id="prod_stock" type="number" name="stock" required="required" min="1"/> </div>
-            <label for="prod_image"> Image * </label>
-            <div> <input type="file" name="file" required="true" accept="image/jpeg"/> </div>
+            <label for="prod_image_edit"> Image (Press the button, OR Drag-and-Drop your file here) * </label>
+            <div> <input id="prod_image_edit" type="file" name="file" required="true" accept="image/jpeg" onchange="handleFiles(this)" onclick="this.value=null;"/> </div>
+            <div> <img id="target_edit"/> </div> 
             <input type="submit" value="Submit"/>
         </form>
     </fieldset>
@@ -90,4 +92,6 @@ foreach ($prod_res as $prod_value){
             <input type="submit" value="Submit"/>
         </form>
     </fieldset>
+
+    <script src="admin-script.js"></script>
 </html>

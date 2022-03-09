@@ -3,6 +3,7 @@
     <head>
         <!-- Bootstrap framework -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
         <link rel="stylesheet" href="style_cat.css">
         <title>IERG4210 Project</title>
@@ -10,19 +11,13 @@
             $db = new PDO('sqlite:/var/www/cart.db'); 
             $currentCat = $_REQUEST["cat"];
         ?>
+
     </head>
     <body>
         <div class="container">
             <div class="row">
                 <section id="left" class="col-2">
                     <div class="shoppinglist">
-                        <p class="shorttext">Shopping List $10</p>
-                        <ul class="longtext list-group list-unstyled">
-                            <li>Shopping List $10</li>
-                            <li>Item1 <input type="text" size="2" value="1"/> @2</li>
-                            <li>Item2 <input type="text" size="2" value="1"/> @8</li>
-                            <li><button class="checkout">Checkout</button></li>
-                        </ul>
                     </div>
                     <div class="menu">
                         <p>Catagories</p>
@@ -64,7 +59,7 @@
                                     $prod_name = $prod_element["NAME"];
                                     $prod_price = $prod_element["PRICE"];
                                     ?>
-                                    <li><a href="/Items/index.php?item=<?php echo htmlspecialchars($pid) ?>"><img src="/Resources/Item_Photo/<?php echo $pid; ?>.jpg"/><br><?php echo $prod_name; ?></a><br>$<?php echo $prod_price; ?> <button>Add</button></li>
+                                    <li><a href="/Items/index.php?item=<?php echo htmlspecialchars($pid) ?>"><img src="/Resources/Item_Photo/<?php echo $pid; ?>.jpg"/><br><?php echo $prod_name; ?></a><br>$<?php echo $prod_price; ?> <button onclick="add_to_cart(<?php echo $pid ?>)">Add</button></li>
                                     <?php
                                 }
                             ?>
@@ -75,5 +70,6 @@
             </div>
     
         </div>
+        <script src="add_prod.js"></script>
     </body>
 </html>

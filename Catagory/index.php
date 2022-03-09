@@ -70,6 +70,6 @@
             </div>
     
         </div>
-        <script src="add_prod.js"></script>
+        <script src="/lib/add_prod.js"></script>
     </body>
 </html>

@@ -3,6 +3,7 @@
     <head>
         <!-- Bootstrap framework -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
         <link rel="stylesheet" href="style_item.css" >
         <title>IERG4210 Project</title>
@@ -22,14 +23,7 @@
         <div class="container">
             <div class="row">
                 <section id="left" class="col-2">
-                    <div class="shoppinglist">
-                        <p class="shorttext">Shopping List $10</p>
-                        <ul class="longtext list-group list-unstyled">
-                            <li>Shopping List $10</li>
-                            <li>Item1 <input type="text" size="2" value="1"/> @2</li>
-                            <li>Item2 <input type="text" size="2" value="1"/> @8</li>
-                            <li><button class="checkout">Checkout</button></li>
-                        </ul>            
+                    <div class="shoppinglist">       
                     </div>
                     <div class="menu">
                         <p>Catagories</p>
@@ -51,7 +45,7 @@
                 <section id="right" class="col-10">
                     <div class="linklist">
                         <p class="linktext">
-                            <a href="/index.html">Main</a> > <a href="/Catagory/index.php?cat=<?php echo htmlspecialchars($prod_catid) ?>">
+                            <a href="/index.php">Main</a> > <a href="/Catagory/index.php?cat=<?php echo htmlspecialchars($prod_catid) ?>">
                             <?php 
                                     $query_all = $db->query("SELECT name FROM categories WHERE catid = $prod_catid;");
                                     $headcat_res = $query_all->fetch();
@@ -66,14 +60,13 @@
                         <h3><?php echo $prod_name; ?></h3>
                         <p>Price: $<?php echo $prod_price; ?></p>
                         <p>Stock: <?php echo $prod_stock; ?></p>
-                        <button>Add to Cart</button>
+                        <button onclick="add_to_cart(<?php echo $prod_pid ?>)">Add to Cart</button>
                         <hr>
                         <p><?php echo $prod_desc; ?></p>
                     </div>
                 </section>
-    
             </div>
-    
         </div>
+        <script src="/lib/add_prod.js"></script>
     </body>
 </html>

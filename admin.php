@@ -93,5 +93,5 @@ foreach ($prod_res as $prod_value){
         </form>
     </fieldset>
 
-    <script src="admin-script.js"></script>
+    <script src="/lib/admin-script.js"></script>
 </html>

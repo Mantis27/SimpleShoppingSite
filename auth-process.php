@@ -31,16 +31,16 @@ function ierg4210_user_login() {
         } 
     }
     if ($login_result) {
+        // set cookie and token
+        $exp = time() + 3600 * 24 * 3;
+        $token = array(
+            'em'=>$result["EMAIL"],
+            'exp'=>$exp,
+            'k'=> hash_hmac('sha256', $exp.$result["PW"], $result["SALT"])
+        );
+        setcookie('auth', json_encode($token), $exp, '', '', true, true);
+        $_SESSION['auth'] = $token;
         if ($result["ADMINFLAG"] == 1) {
-            // set cookie and token
-            $exp = time() + 3600 * 24 * 3;
-            $token = array(
-                'em'=>$result["EMAIL"],
-                'exp'=>$exp,
-                'k'=> hash_hmac('sha256', $exp.$result["PW"], $result["SALT"])
-            );
-            setcookie('s4210', json_encode($token), $exp, '', '', true, true);
-            $_SESSION['s4210'] = $token;
             // redirect
             header('Location: admin.php', true, 302);
             exit();

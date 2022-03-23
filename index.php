@@ -22,7 +22,14 @@
             <nav class="navbar navbar-light bg-light">
                 <a class="navbar-brand" href="#">Andy's Simple Shopping Mall</a>
                 <p class="navbar-text">Login-ed as: <?php echo $auth_email; ?></p>
-                <p class="navbar-text"><a href="#">LogOut</a></p>
+                <?php
+                if ($auth_email == "GUEST") {
+                    echo '<p class="navbar-text"><a href="/login.php">LogIn</a></p>';
+                }
+                else {
+                    echo '<p class="navbar-text"><a href="#">LogOut</a></p>';
+                }
+                ?>
             </nav>
             <div class="row">
                 <section id="left" class="col-2">

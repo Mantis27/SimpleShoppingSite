@@ -7,10 +7,10 @@ function newDB() {
 }
 
 function auth() {
-    if (!empty($_SESSION['s4210']))
-        return $_SESSION['s4210']['em'];
-    if (!empty($_COOKIE['s4210'])) {
-        if ($t = json_decode(stripslashes($_COOKIE['s4210']), true)) {
+    if (!empty($_SESSION['auth']))
+        return $_SESSION['auth']['em'];
+    if (!empty($_COOKIE['auth'])) {
+        if ($t = json_decode(stripslashes($_COOKIE['auth']), true)) {
             if (time() > $t['exp'])
                 return false;
             $db = newDB();
@@ -19,7 +19,7 @@ function auth() {
             if ($r = $q ->fetch()) {
                 $realk = hash_hmac('sha256', $t['exp'].$r['PW'], $r['SALT']);
                 if ($realk == $t['k']) {
-                    $_SESSION['s4210'] = $t;
+                    $_SESSION['auth'] = $t;
                     return $t['em'];
                 }
             }
@@ -29,10 +29,10 @@ function auth() {
 }
 
 function authAdmin() {
-    if (!empty($_SESSION['s4210']))
-        return $_SESSION['s4210']['em'];
-    if (!empty($_COOKIE['s4210'])) {
-        if ($t = json_decode(stripslashes($_COOKIE['s4210']), true)) {
+    if (!empty($_SESSION['auth']))
+        return $_SESSION['auth']['em'];
+    if (!empty($_COOKIE['auth'])) {
+        if ($t = json_decode(stripslashes($_COOKIE['auth']), true)) {
             if (time() > $t['exp'])
                 return false;
             $db = newDB();
@@ -43,7 +43,7 @@ function authAdmin() {
                 if ($realk == $t['k']) {
                     // token not changed
                     if ($r['ADMINFLAG'] == 1) {
-                        $_SESSION['s4210'] = $t;
+                        $_SESSION['auth'] = $t;
                         return $t['em'];
                     }
                 }

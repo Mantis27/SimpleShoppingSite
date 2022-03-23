@@ -35,7 +35,7 @@
                     echo '<p class="navbar-text"><a href="/login.php">LogIn</a></p>';
                 }
                 else {
-                    echo '<p class="navbar-text"><a href="/lib/logout.php">LogOut</a></p>';
+                    echo '<p class="navbar-text"><a href="/logout.php">LogOut</a></p>';
                 }
                 ?>
             </nav>

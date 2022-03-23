@@ -1,5 +1,5 @@
 <?php 
-include_once('auth.php');
+include_once('lib/auth.php');
 if (!auth()) {
     header('Location: /login.php', true, 302);
     exit();

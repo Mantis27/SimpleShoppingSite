@@ -42,7 +42,7 @@ function authAdmin() {
                 $realk = hash_hmac('sha256', $t['exp'].$r['PW'], $r['SALT']);
                 if ($realk == $t['k']) {
                     // token not changed
-                    if ($r['ADMINFLAG'] != 1) {
+                    if ($r['ADMINFLAG'] == 1) {
                         $_SESSION['s4210'] = $t;
                         return $t['em'];
                     }

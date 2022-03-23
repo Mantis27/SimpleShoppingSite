@@ -18,7 +18,7 @@ function ierg4210_user_login() {
         || !preg_match("/^[\w@#$%\^\&\*\-]+$/", $_POST['fpw']))
         throw new Exception("Wrong Credentials");
 
-    $sql="SELECT email, salt, pw, username, adminflag FROM users WHERE email=?";
+    $sql="SELECT email, salt, pw, adminflag FROM users WHERE email=?";
     $q = $db->prepare($sql);
     $email = $_POST["femail"];
     $o_pw = $_POST["fpw"];

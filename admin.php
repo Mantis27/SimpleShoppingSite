@@ -1,6 +1,6 @@
 <?php
 include_once('lib/auth.php');
-if (!auth()) {
+if (!authAdmin()) {
     header('Location: login.php', true, 302);
 }
 

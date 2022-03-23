@@ -46,7 +46,7 @@ function ierg4210_user_login() {
             exit();
         }
         else {
-            //header('Location: index.php', true, 302);
+            header('Location: index.php', true, 302);
             exit();
         }
 

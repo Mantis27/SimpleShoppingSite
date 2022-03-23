@@ -10,11 +10,29 @@
         <?php 
             $db = new PDO('sqlite:/var/www/cart.db'); 
             $currentCat = $_REQUEST["cat"];
+            include_once('../lib/auth.php');
+            $auth_email = auth();
+            if (!$auth_email) {
+                // false, fake/no cookie
+                $auth_email = "GUEST";
+            }
         ?>
 
     </head>
     <body>
         <div class="container">
+            <nav class="navbar navbar-light bg-light">
+                <a class="navbar-brand" href="#">Andy's Simple Shopping Mall</a>
+                <p class="navbar-text">Login-ed as: <?php echo $auth_email; ?></p>
+                <?php
+                if ($auth_email == "GUEST") {
+                    echo '<p class="navbar-text"><a href="/login.php">LogIn</a></p>';
+                }
+                else {
+                    echo '<p class="navbar-text"><a href="/lib/logout.php">LogOut</a></p>';
+                }
+                ?>
+            </nav>
             <div class="row">
                 <section id="left" class="col-2">
                     <div class="shoppinglist">

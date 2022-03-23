@@ -6,8 +6,9 @@
         <label for="login_email">E-mail: </label>
         <input type="text" id="login_email" name="femail"> <br>
         <label for="login_pw">Password: </label>
-        <input type="text" id="login_pw" name="fpw">
+        <input type="text" id="login_pw" name="fpw"> <br>
         <input type="submit">
     </form>
+    <a href="/index.php">Back to Shop</a>
 </body>
 </html>

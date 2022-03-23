@@ -15,8 +15,12 @@ function ierg4210_user_login() {
     $db = ierg4210_DB();
     if (empty($_POST['femail']) || empty($_POST['fpw']) 
         || !preg_match("/^[\w=+\-\/][\w='+\-\/\.]*@[\w\-]+(\.[\w\-]+)*(\.[\w]{2,6})$/", $_POST['femail'])
-        || !preg_match("/^[\w@#$%\^\&\*\-]+$/", $_POST['fpw']))
-        throw new Exception("Wrong Credentials");
+        || !preg_match("/^[\w@#$%\^\&\*\-]+$/", $_POST['fpw'])) {
+        //throw new Exception("Wrong Credentials");
+        header('Location: login.php', true, 302);
+        exit();
+    }
+        
 
     $sql="SELECT email, salt, pw, adminflag FROM users WHERE email=?";
     $q = $db->prepare($sql);
@@ -38,8 +42,9 @@ function ierg4210_user_login() {
             'exp'=>$exp,
             'k'=> hash_hmac('sha256', $exp.$result["PW"], $result["SALT"])
         );
-        setcookie('auth', json_encode($token), $exp, '', '', true, true);
+        setcookie('auth', json_encode($token), $exp, '/', '', true, true);
         $_SESSION['auth'] = $token;
+        session_regenerate_id();
         if ($result["ADMINFLAG"] == 1) {
             // redirect
             header('Location: admin.php', true, 302);
@@ -52,7 +57,9 @@ function ierg4210_user_login() {
 
     }
     else {
-        throw new Exception("Wrong Cred");
+        //throw new Exception("Wrong Cred");
+        header('Location: login.php', true, 302);
+        exit();
     }
 }
 

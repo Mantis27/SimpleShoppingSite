@@ -1,4 +1,9 @@
 <?php
+include_once('lib/auth.php');
+if (!auth()) {
+    header('Location: login.php', true, 302);
+}
+
 require __DIR__.'/lib/db.inc.php';
 $res = ierg4210_cat_fetchall();
 $options = '';

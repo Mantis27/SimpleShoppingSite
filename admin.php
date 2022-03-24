@@ -34,9 +34,9 @@ foreach ($prod_res as $prod_value){
             <label for="prod_price"> Price *</label>
             <div> <input id="prod_price" type="text" name="price" required="required" pattern="^\d+\.?\d*$"/></div>
             <label for="prod_desc"> Description *</label>
-            <div> <textarea id="prod_desc" type="text" name="description"></textarea> </div>
+            <div> <textarea id="prod_desc" type="text" name="description" pattern="^[\w\-\,\.\& ]+$" title="Only ,._& allowed."></textarea> </div>
             <label for="prod_stock"> Inventory *</label>
-            <div> <input id="prod_stock" type="number" name="stock" required="required" min="1"/> </div>
+            <div> <input id="prod_stock" type="text" name="stock" required="required" pattern="^\d*$"/> </div>
             <label for="prod_image_insert"> Image (Press the button, OR Drag-and-Drop your file here) *</label>
             <div> <input id="prod_image_insert" type="file" name="file1" required="true" accept="image/jpeg" onchange="handleFiles(this)" onclick="this.value=null;"/> </div>
             <div> <img id="target_insert"/> </div> 
@@ -56,9 +56,9 @@ foreach ($prod_res as $prod_value){
             <label for="prod_price"> Price *</label>
             <div> <input id="prod_price" type="text" name="price" required="required" pattern="^\d+\.?\d*$"/></div>
             <label for="prod_desc"> Description *</label>
-            <div> <textarea id="prod_desc" type="text" name="description"></textarea> </div>
+            <div> <textarea id="prod_desc" type="text" name="description" pattern="^[\w\-\,\.\& ]+$" title="Only ,._& allowed."></textarea> </div>
             <label for="prod_stock"> Inventory *</label>
-            <div> <input id="prod_stock" type="number" name="stock" required="required" min="1"/> </div>
+            <div> <input id="prod_stock" type="text" name="stock" required="required" pattern="^\d*$"/> </div>
             <label for="prod_image_edit"> Image (Press the button, OR Drag-and-Drop your file here) * </label>
             <div> <input id="prod_image_edit" type="file" name="file" required="true" accept="image/jpeg" onchange="handleFiles(this)" onclick="this.value=null;"/> </div>
             <div> <img id="target_edit"/> </div> 

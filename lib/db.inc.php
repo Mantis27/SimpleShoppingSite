@@ -44,9 +44,9 @@ function ierg4210_prod_insert() {
     if (!preg_match('/^[\d\.]+$/', $_POST['price']))
         throw new Exception("invalid-price");
     //$_POST['price1'] = floatval($_POST['price1']);
-    if (!preg_match('/^[\w\-\,\. ]+$/', $_POST['description']))
+    if (!preg_match('/^[\w\-\,\.\& ]+$/', $_POST['description']))
         throw new Exception("invalid-text");
-    if (!preg_match('/^[\d\- ]+$/', $_POST['stock']))
+    if (!preg_match('/^\d*$/', $_POST['stock']))
         throw new Exception("invalid-stock");
     $_POST['stock'] = (int) $_POST['stock'];
     
@@ -55,10 +55,21 @@ function ierg4210_prod_insert() {
         && mime_content_type($_FILES["file1"]["tmp_name"]) == "image/jpeg"
         && $_FILES["file1"]["size"] < 5000000) {
         $catid = $_POST["catid"];
+        $catid = filter_var($catid, FILTER_SANITIZE_NUMBER_INT);
+        if (!filter_var($catid, FILTER_VALIDATE_INT))
+            throw new Exception("invalid-catid");
         $name = $_POST["name"];
+        $name = filter_var($name, FILTER_SANITIZE_STRING);
         $price = $_POST["price"];
+        $price = filter_var($price, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+        if (!filter_var($price, FILTER_VALIDATE_FLOAT))
+            throw new Exception("invalid-price");
         $desc = $_POST["description"];
+        $desc = filter_var($desc, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_AMP);
         $stock = $_POST["stock"];
+        $stock = filter_var($stock, FILTER_SANITIZE_NUMBER_INT);
+        if (!filter_var($stock, FILTER_VALIDATE_INT))
+            throw new Exception("invalid-stock");
         
         $sql="INSERT INTO products (catid, name, price, description, stock) VALUES (?, ?, ?, ?, ?)";
         $q = $db->prepare($sql);
@@ -98,6 +109,7 @@ function ierg4210_cat_insert() {
     $q = $db->prepare($sql);
 
     $name = $_POST["name"];
+    $name = filter_var($name, FILTER_SANITIZE_STRING);
 
     $q->bindParam(1, $name);
     $q->execute();
@@ -119,7 +131,11 @@ function ierg4210_cat_edit(){
     $q = $db->prepare($sql);
 
     $name = $_POST["name"];
+    $name = filter_var($name, FILTER_SANITIZE_STRING);
     $catid = $_POST["catid"];
+    $catid = filter_var($catid, FILTER_SANITIZE_NUMBER_INT);
+    if (!filter_var($catid, FILTER_VALIDATE_INT))
+        throw new Exception("invalid-catid");
 
     $q->bindParam(1, $name);
     $q->bindParam(2, $catid);
@@ -140,6 +156,9 @@ function ierg4210_cat_delete(){
     $q = $db->prepare($sql);
 
     $catid = $_POST["catid"];
+    $catid = filter_var($catid, FILTER_SANITIZE_NUMBER_INT);
+    if (!filter_var($catid, FILTER_VALIDATE_INT))
+        throw new Exception("invalid-catid");
 
     $q->bindParam(1, $catid);
     $q->execute();
@@ -157,6 +176,9 @@ function ierg4210_prod_delete_by_catid(){
     $sql="DELETE FROM products WHERE pid = ?";
     $q = $db->prepare($sql);
     $pid = $_POST["pid"];
+    $pid = filter_var($pid, FILTER_SANITIZE_NUMBER_INT);
+    if (!filter_var($pid, FILTER_VALIDATE_INT))
+        throw new Exception("invalid-pid");
     $q->bindParam(1, $pid);
     if (unlink("/var/www/html/Resources/Item_Photo/".$pid.".jpg")) {
         $q->execute();
@@ -189,15 +211,18 @@ function ierg4210_prod_edit(){
         throw new Exception("invalid-name");
     if (!preg_match('/^[\d\.]+$/', $_POST['price']))
         throw new Exception("invalid-price");
-    if (!preg_match('/^[\w\-\,\. ]+$/', $_POST['description']))
+    if (!preg_match('/^[\w\-\,\.\& ]+$/', $_POST['description']))
         throw new Exception("invalid-text");
-    if (!preg_match('/^[\d\- ]+$/', $_POST['stock']))
+    if (!preg_match('/^\d*$/', $_POST['stock']))
         throw new Exception("invalid-stock");
     $_POST['stock'] = (int) $_POST['stock'];
 
     $sql="DELETE FROM products WHERE pid = ?";
     $q = $db->prepare($sql);
     $pid = $_POST["pid"];
+    $pid = filter_var($pid, FILTER_SANITIZE_NUMBER_INT);
+    if (!filter_var($pid, FILTER_VALIDATE_INT))
+        throw new Exception("invalid-pid");
     $q->bindParam(1, $pid);
     if (unlink("/var/www/html/Resources/Item_Photo/".$pid.".jpg")) {
         $q->execute(); //detele record
@@ -207,10 +232,21 @@ function ierg4210_prod_edit(){
         && mime_content_type($_FILES["file"]["tmp_name"]) == "image/jpeg"
         && $_FILES["file"]["size"] < 5000000) {
             $catid = $_POST["catid"];
+            $catid = filter_var($catid, FILTER_SANITIZE_NUMBER_INT);
+            if (!filter_var($catid, FILTER_VALIDATE_INT))
+                throw new Exception("invalid-catid");
             $name = $_POST["name"];
+            $name = filter_var($name, FILTER_SANITIZE_STRING);
             $price = $_POST["price"];
+            $price = filter_var($price, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+            if (!filter_var($price, FILTER_VALIDATE_FLOAT))
+                throw new Exception("invalid-price");    
             $desc = $_POST["description"];
+            $desc = filter_var($desc, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_AMP);
             $stock = $_POST["stock"];
+            $stock = filter_var($stock, FILTER_SANITIZE_NUMBER_INT);
+            if (!filter_var($stock, FILTER_VALIDATE_INT))
+                throw new Exception("invalid-stock");
             
             $sql="INSERT INTO products (pid, catid, name, price, description, stock) VALUES (?, ?, ?, ?, ?, ?)";
             $q = $db->prepare($sql);
@@ -246,6 +282,9 @@ function ierg4210_prod_delete(){ // no use yet
     $sql="DELETE FROM products WHERE pid = ?";
     $q = $db->prepare($sql);
     $pid = $_POST["pid"];
+    $pid = filter_var($pid, FILTER_SANITIZE_NUMBER_INT);
+    if (!filter_var($pid, FILTER_VALIDATE_INT))
+        throw new Exception("invalid-pid");
     $q->bindParam(1, $pid);
     if (unlink("/var/www/html/Resources/Item_Photo/".$pid.".jpg")) {
         $q->execute(); //detele record

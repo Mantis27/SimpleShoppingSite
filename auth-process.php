@@ -27,7 +27,9 @@ function ierg4210_user_login() {
     $sql="SELECT email, salt, pw, adminflag FROM users WHERE email=?";
     $q = $db->prepare($sql);
     $email = $_POST["femail"];
+    $email = filter_var($email, FILTER_SANITIZE_EMAIL);
     $o_pw = $_POST["fpw"];
+    $o_pw = filter_var($o_pw, FILTER_SANITIZE_STRING);
     $q->bindParam(1, $email);
     if ($q->execute()) {
         $result = $q->fetch();
@@ -81,7 +83,9 @@ function ierg4210_change_pw() {
     $sql="SELECT email, salt, pw, adminflag FROM users WHERE email=?";
     $q = $db->prepare($sql);
     $email = $_POST["femail"];
+    $email = filter_var($email, FILTER_SANITIZE_EMAIL);
     $o_pw = $_POST["fopw"];
+    $o_pw = filter_var($o_pw, FILTER_SANITIZE_STRING);
     $q->bindParam(1, $email);
     if ($q->execute()) {
         $result = $q->fetch();
@@ -95,7 +99,9 @@ function ierg4210_change_pw() {
         $sql="UPDATE users SET salt=?, pw=? WHERE email=?";
         $q = $db->prepare($sql);
         $email = $_POST["femail"];
+        $email = filter_var($email, FILTER_SANITIZE_EMAIL);
         $n_pw = $_POST["fnpw"];
+        $n_pw = filter_var($o_pw, FILTER_SANITIZE_STRING);
         $salt = mt_rand();
         $ns_pw = hash_hmac('sha256', $n_pw, $salt);
         $q->bindParam(1, $salt);

@@ -14,7 +14,7 @@ if (!auth()) {
         <legend>Change Password</legend>
         <form id="prod_insert" method="POST" action="auth-process.php?action=<?php echo ($action = 'change_pw');?>">
             <label for="login_email">E-mail: </label>
-            <input type="text" id="login_email" name="femail"> <br>
+            <input type="text" id="login_email" name="femail" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"> <br>
             <label for="login_opw">Old Password: </label>
             <input type="text" id="login_opw" name="fopw"> <br>
             <label for="login_npw">New Password: </label>

@@ -31,7 +31,7 @@
             <nav class="navbar navbar-light bg-light">
                 <a class="navbar-brand" href="#">Andy's Simple Shopping Mall</a>
                 <p class="navbar-text"><a href="/admin.php">Admin Page</a></p>
-                <p class="navbar-text">Login-ed as: <?php echo $auth_email; ?></p>
+                <p class="navbar-text">Login-ed as: <?php echo htmlspecialchars($auth_email); ?></p>
                 <?php
                 if ($auth_email == "GUEST") {
                     echo '<p class="navbar-text"><a href="/login.php">LogIn</a></p>';
@@ -56,7 +56,7 @@
                                     $catid = $cat_element["CATID"];
                                     $name = $cat_element["NAME"];
                                     ?>
-                                    <li><a href="/Catagory/index.php?cat=<?php echo htmlspecialchars($catid); ?>"><?php echo $name; ?></a></li>
+                                    <li><a href="/Catagory/index.php?cat=<?php echo urlencode($catid); ?>"><?php echo htmlspecialchars($name); ?></a></li>
                                     <?php
                                 }
                             ?>
@@ -66,22 +66,22 @@
                 <section id="right" class="col-10">
                     <div class="linklist">
                         <p class="linktext">
-                            <a href="/index.php">Main</a> > <a href="/Catagory/index.php?cat=<?php echo htmlspecialchars($prod_catid) ?>">
+                            <a href="/index.php">Main</a> > <a href="/Catagory/index.php?cat=<?php echo urlencode($prod_catid) ?>">
                             <?php 
                                     $query_all = $db->query("SELECT name FROM categories WHERE catid = $prod_catid;");
                                     $headcat_res = $query_all->fetch();
-                                    echo $headcat_res["NAME"];
+                                    echo htmlspecialchars($headcat_res["NAME"]);
                                 ?>
                             </a> > <a href="#"><?php echo $prod_name; ?></a>
                         </p>       
                     </div>
 
                     <div class="itemdetail">
-                        <img src="/Resources/Item_Photo/<?php echo $prod_pid; ?>.jpg" class="largepic"/>
-                        <h3><?php echo $prod_name; ?></h3>
-                        <p>Price: $<?php echo $prod_price; ?></p>
-                        <p>Stock: <?php echo $prod_stock; ?></p>
-                        <button onclick="add_to_cart(<?php echo $prod_pid ?>)">Add to Cart</button>
+                        <img src="/Resources/Item_Photo/<?php echo htmlspecialchars($prod_pid); ?>.jpg" class="largepic"/>
+                        <h3><?php echo htmlspecialchars($prod_name); ?></h3>
+                        <p>Price: $<?php echo htmlspecialchars($prod_price); ?></p>
+                        <p>Stock: <?php echo htmlspecialchars($prod_stock); ?></p>
+                        <button onclick="add_to_cart(<?php echo htmlspecialchars($prod_pid); ?>)">Add to Cart</button>
                         <hr>
                         <p><?php echo $prod_desc; ?></p>
                     </div>

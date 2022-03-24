@@ -23,7 +23,7 @@
             <nav class="navbar navbar-light bg-light">
                 <a class="navbar-brand" href="#">Andy's Simple Shopping Mall</a>
                 <p class="navbar-text"><a href="/admin.php">Admin Page</a></p>
-                <p class="navbar-text">Login-ed as: <?php echo $auth_email; ?></p>
+                <p class="navbar-text">Login-ed as: <?php echo htmlspecialchars($auth_email); ?></p>
                 <?php
                 if ($auth_email == "GUEST") {
                     echo '<p class="navbar-text"><a href="/login.php">LogIn</a></p>';
@@ -48,7 +48,7 @@
                                     $catid = $cat_element["CATID"];
                                     $name = $cat_element["NAME"];
                                     ?>
-                                    <li><a href="/Catagory/index.php?cat=<?php echo htmlspecialchars($catid); ?>"><?php echo $name; ?></a></li>
+                                    <li><a href="/Catagory/index.php?cat=<?php echo urlencode($catid); ?>"><?php echo htmlspecialchars($name); ?></a></li>
                                     <?php
                                 }
                             ?>

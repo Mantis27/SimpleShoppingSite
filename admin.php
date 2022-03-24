@@ -26,7 +26,7 @@ foreach ($prod_res as $prod_value){
     <h2>Admin Page</h2>
     <fieldset id="field_prod_insert">
         <legend>Product Insert</legend>
-        <form id="prod_insert" method="POST" action="admin-process.php?action=<?php echo ($action = 'prod_insert');?>" enctype="multipart/form-data">
+        <form id="prod_insert" method="POST" action="admin-process.php?action=<?php echo urlencode($action = 'prod_insert');?>" enctype="multipart/form-data">
             <label for="prod_catid"> Category *</label>
             <div> <select id="prod_catid" name="catid"><?php echo $options; ?></select></div>
             <label for="prod_name"> Name *</label>
@@ -46,7 +46,7 @@ foreach ($prod_res as $prod_value){
     </fieldset>
     <fieldset id="field_prod_edit">
         <legend>Product Edit</legend>
-        <form id="prod_edit" method="POST" action="admin-process.php?action=<?php echo ($action = 'prod_edit');?>" enctype="multipart/form-data">
+        <form id="prod_edit" method="POST" action="admin-process.php?action=<?php echo urlencode($action = 'prod_edit');?>" enctype="multipart/form-data">
             <label for="prod_id"> Product ID *</label>
             <div> <select id="prod_id" name="pid"><?php echo $prod_options; ?></select></div>
             <label for="prod_catid"> Category *</label>
@@ -68,7 +68,7 @@ foreach ($prod_res as $prod_value){
     </fieldset>
     <fieldset>
         <legend>Product Delete</legend>
-        <form id="prod_delete_by_catid" method="POST" action="admin-process.php?action=<?php echo ($action = 'prod_delete_by_catid');?>" enctype="multipart/form-data">
+        <form id="prod_delete_by_catid" method="POST" action="admin-process.php?action=<?php echo urlencode($action = 'prod_delete_by_catid');?>" enctype="multipart/form-data">
             <label for="prod_id"> Product ID *</label>
             <div> <select id="prod_id" name="pid"><?php echo $prod_options; ?></select></div>
             <input type="submit" value="Submit"/>
@@ -77,7 +77,7 @@ foreach ($prod_res as $prod_value){
     </fieldset>
     <fieldset>
         <legend>Category Insert</legend>
-        <form id="cat_insert" method="POST" action="admin-process.php?action=<?php echo ($action = 'cat_insert');?>" enctype="multipart/form-data">
+        <form id="cat_insert" method="POST" action="admin-process.php?action=<?php echo urlencode($action = 'cat_insert');?>" enctype="multipart/form-data">
             <label for="cat_name"> Cat Name *</label>
             <div> <input id="cat_name" type="text" name="name" required="required" pattern="^[\w\-]+$"/> </div>
             <input type="submit" value="Submit"/>
@@ -86,7 +86,7 @@ foreach ($prod_res as $prod_value){
     </fieldset>
     <fieldset>
         <legend>Category Edit</legend>
-        <form id="cat_edit" method="POST" action="admin-process.php?action=<?php echo ($action = 'cat_edit');?>" enctype="multipart/form-data">
+        <form id="cat_edit" method="POST" action="admin-process.php?action=<?php echo urlencode($action = 'cat_edit');?>" enctype="multipart/form-data">
             <label for="cat_id"> Category *</label>
             <div> <select id="cat_id" name="catid"><?php echo $options; ?></select></div>
             <label for="cat_name"> New Name *</label>
@@ -98,7 +98,7 @@ foreach ($prod_res as $prod_value){
 
     <fieldset>
         <legend>Category Delete</legend>
-        <form id="cat_delete" method="POST" action="admin-process.php?action=<?php echo ($action = 'cat_delete');?>" enctype="multipart/form-data">
+        <form id="cat_delete" method="POST" action="admin-process.php?action=<?php echo urlencode($action = 'cat_delete');?>" enctype="multipart/form-data">
             <label for="cat_id"> Category *</label>
             <div> <select id="cat_id" name="catid"><?php echo $options; ?></select></div>
             <input type="submit" value="Submit"/>

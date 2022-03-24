@@ -25,7 +25,7 @@
             <nav class="navbar navbar-light bg-light">
                 <a class="navbar-brand" href="#">Andy's Simple Shopping Mall</a>
                 <p class="navbar-text"><a href="/admin.php">Admin Page</a></p>
-                <p class="navbar-text">Login-ed as: <?php echo $auth_email; ?></p>
+                <p class="navbar-text">Login-ed as: <?php echo htmlspecialchars($auth_email); ?></p>
                 <?php
                 if ($auth_email == "GUEST") {
                     echo '<p class="navbar-text"><a href="/login.php">LogIn</a></p>';
@@ -50,7 +50,7 @@
                                     $catid = $cat_element["CATID"];
                                     $name = $cat_element["NAME"];
                                     ?>
-                                    <li><a href="/Catagory/index.php?cat=<?php echo htmlspecialchars($catid); ?>"><?php echo $name; ?></a></li>
+                                    <li><a href="/Catagory/index.php?cat=<?php echo urlencode($catid); ?>"><?php echo htmlspecialchars($name); ?></a></li>
                                     <?php
                                 }
                             ?>
@@ -64,7 +64,7 @@
                                 <?php 
                                     $query_all = $db->query("SELECT name FROM categories WHERE catid = $currentCat;");
                                     $head_res = $query_all->fetch();
-                                    echo $head_res["NAME"];
+                                    echo htmlspecialchars($head_res["NAME"]);
                                 ?>
                             </a>
                         </p>       
@@ -80,7 +80,7 @@
                                     $prod_name = $prod_element["NAME"];
                                     $prod_price = $prod_element["PRICE"];
                                     ?>
-                                    <li><a href="/Items/index.php?item=<?php echo htmlspecialchars($pid) ?>"><img src="/Resources/Item_Photo/<?php echo $pid; ?>.jpg"/><br><?php echo $prod_name; ?></a><br>$<?php echo $prod_price; ?> <button onclick="add_to_cart(<?php echo $pid ?>)">Add</button></li>
+                                    <li><a href="/Items/index.php?item=<?php echo urlencode($pid); ?>"><img src="/Resources/Item_Photo/<?php echo htmlspecialchars($pid); ?>.jpg"/><br><?php echo htmlspecialchars($prod_name); ?></a><br>$<?php echo htmlspecialchars($prod_price); ?> <button onclick="add_to_cart(<?php echo htmlspecialchars($pid); ?>)">Add</button></li>
                                     <?php
                                 }
                             ?>

@@ -12,7 +12,7 @@ if (!auth()) {
     <h2>Update Password</h2>
     <fieldset>
         <legend>Change Password</legend>
-        <form id="prod_insert" method="POST" action="auth-process.php?action=<?php echo ($action = 'change_pw');?>">
+        <form id="prod_insert" method="POST" action="auth-process.php?action=<?php echo urlencode($action = 'change_pw');?>">
             <label for="login_email">E-mail: </label>
             <input type="text" id="login_email" name="femail" pattern="[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{1,}$" title="Require: [chars]@[domain].[word]"> <br>
             <label for="login_opw">Old Password: </label>

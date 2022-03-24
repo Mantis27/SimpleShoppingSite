@@ -101,7 +101,7 @@ function ierg4210_change_pw() {
         $email = $_POST["femail"];
         $email = filter_var($email, FILTER_SANITIZE_EMAIL);
         $n_pw = $_POST["fnpw"];
-        $n_pw = filter_var($o_pw, FILTER_SANITIZE_STRING);
+        $n_pw = filter_var($n_pw, FILTER_SANITIZE_STRING);
         $salt = mt_rand();
         $ns_pw = hash_hmac('sha256', $n_pw, $salt);
         $q->bindParam(1, $salt);

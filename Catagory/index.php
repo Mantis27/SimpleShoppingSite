@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<?php session_start(); ?>
 <html>
     <head>
         <!-- Bootstrap framework -->
@@ -23,6 +24,7 @@
         <div class="container">
             <nav class="navbar navbar-light bg-light">
                 <a class="navbar-brand" href="#">Andy's Simple Shopping Mall</a>
+                <p class="navbar-text"><a href="/admin.php">Admin Page</a></p>
                 <p class="navbar-text">Login-ed as: <?php echo $auth_email; ?></p>
                 <?php
                 if ($auth_email == "GUEST") {

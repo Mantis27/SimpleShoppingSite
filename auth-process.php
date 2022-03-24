@@ -1,5 +1,7 @@
 <?php
+session_start();
 header('Content-Type: application/json');
+include_once('lib/nonce.php');
 
 function ierg4210_DB() {
 	$db = new PDO('sqlite:/var/www/cart.db');
@@ -128,7 +130,7 @@ if (empty($_REQUEST['action']) || !preg_match('/^\w+$/', $_REQUEST['action'])) {
 }
 
 try {
-
+    csrf_verifyNonce($_REQUEST['action'], $_POST['nonce']);
 	if (($returnVal = call_user_func('ierg4210_' . $_REQUEST['action'])) === false) {
 		if ($db && $db->errorCode()) 
 			error_log(print_r($db->errorInfo(), true));

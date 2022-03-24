@@ -29,8 +29,18 @@ function auth() {
 }
 
 function authAdmin() {
-    if (!empty($_SESSION['auth']))
-        return $_SESSION['auth']['em'];
+    if (!empty($_SESSION['auth'])) {
+        // is auth-ed, but is he admin?
+        $db = newDB();
+        $q = $db->prepare('SELECT adminflag FROM users WHERE email=?');
+        $q->execute(array($_SESSION['auth']['em']));
+        if ($r = $q ->fetch()) {
+            if ($r['ADMINFLAG'] == 1) {
+                // is admin!
+                return $_SESSION['auth']['em'];
+            }
+        }
+    }
     if (!empty($_COOKIE['auth'])) {
         if ($t = json_decode(stripslashes($_COOKIE['auth']), true)) {
             if (time() > $t['exp'])

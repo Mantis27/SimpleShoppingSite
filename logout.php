@@ -1,4 +1,5 @@
 <?php 
+session_start();
 include_once('lib/auth.php');
 if (!auth()) {
     header('Location: /login.php', true, 302);

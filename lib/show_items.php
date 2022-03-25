@@ -7,17 +7,29 @@ if (isset($_POST["query_page"])) {
     $perPage = $_POST["per_page"];
     $category = $_POST["category"];
 
-    $sql = "SELECT pid, name, price FROM products WHERE catid = ? LIMIT ?, ?;";
-    $query_all = $db->prepare($sql);
+    if ($category == 0) {
+        $sql = "SELECT pid, name, price FROM products LIMIT ?, ?;";
+        $query_all = $db->prepare($sql);
 
-    $sql_p_category = filter_var($category, FILTER_SANITIZE_NUMBER_INT);
-    $query_all->bindParam(1, $sql_p_category, PDO::PARAM_INT);
+        $sql_p_from = (filter_var($newPage, FILTER_SANITIZE_NUMBER_INT) - 1) * filter_var($perPage, FILTER_SANITIZE_NUMBER_INT);
+        $query_all->bindParam(1, $sql_p_from, PDO::PARAM_INT);
 
-    $sql_p_from = (filter_var($newPage, FILTER_SANITIZE_NUMBER_INT) - 1) * filter_var($perPage, FILTER_SANITIZE_NUMBER_INT);
-    $query_all->bindParam(2, $sql_p_from, PDO::PARAM_INT);
+        $sql_p_max = filter_var($perPage, FILTER_SANITIZE_NUMBER_INT);
+        $query_all->bindParam(2, $sql_p_max, PDO::PARAM_INT);
+    }
+    else {
+        $sql = "SELECT pid, name, price FROM products WHERE catid = ? LIMIT ?, ?;";
+        $query_all = $db->prepare($sql);
 
-    $sql_p_max = filter_var($perPage, FILTER_SANITIZE_NUMBER_INT);
-    $query_all->bindParam(3, $sql_p_max, PDO::PARAM_INT);
+        $sql_p_category = filter_var($category, FILTER_SANITIZE_NUMBER_INT);
+        $query_all->bindParam(1, $sql_p_category, PDO::PARAM_INT);
+
+        $sql_p_from = (filter_var($newPage, FILTER_SANITIZE_NUMBER_INT) - 1) * filter_var($perPage, FILTER_SANITIZE_NUMBER_INT);
+        $query_all->bindParam(2, $sql_p_from, PDO::PARAM_INT);
+
+        $sql_p_max = filter_var($perPage, FILTER_SANITIZE_NUMBER_INT);
+        $query_all->bindParam(3, $sql_p_max, PDO::PARAM_INT);
+    }
 
     if ($query_all->execute()) {
         $prod_res = $query_all->fetchAll();

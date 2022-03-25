@@ -25,7 +25,22 @@
     /*background-color: lightcoral;*/
     text-align: right;
 }
-.itemlist {
-    /*background-color: lightgray;*/
+ul.itemtable{
+    margin:0;
+    padding:0;
+    list-style:none;
+    overflow:auto;
     height: auto;
 }
+ul.itemtable li{
+    width: 250px;
+    height: 250px;
+    float: left;
+    border: 1px solid #CCC;
+    text-align: center;
+}
+ul.itemtable li img{
+    width: 180px;
+    height: 180px;
+}
+.clear{clear:both}

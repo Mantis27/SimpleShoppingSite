@@ -7,7 +7,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
         <link rel="stylesheet" href="style_cat.css">
-        <title>IERG4210 Project</title>
+        <title>IERG4210 Project - Cat</title>
         <?php 
             $db = new PDO('sqlite:/var/www/cart.db'); 
             $currentCat = $_REQUEST["cat"];
@@ -77,7 +77,6 @@
                         </p>       
                     </div>
                     <div id="pageination">
-                        <p>
                         <?php
                         $sql = "SELECT COUNT(*) as count FROM products WHERE catid = ?;";
                         $query_all = $db->prepare($sql);
@@ -95,7 +94,6 @@
                             echo $button_gp;
                         }
                         ?>
-                        </p>
                     </div>
 
                     <div class="itemlist">

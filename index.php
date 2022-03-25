@@ -6,8 +6,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-        <link rel="stylesheet" href="style1.css" >
-        <title>IERG4210 Project</title>
+        <link rel="stylesheet" href="style1.css">
+        <title>IERG4210 Project - Main</title>
         <?php 
             $db = new PDO('sqlite:/var/www/cart.db'); 
             include_once('lib/auth.php');
@@ -16,6 +16,8 @@
                 // false, fake/no cookie
                 $auth_email = "GUEST";
             }
+            $currentCat = 0;
+            $perPage = 2;
         ?>
     </head>
     <body>
@@ -63,9 +65,35 @@
                     </div>
                     <h2>Welcome to the store.</h2>
                     <p>Please select a Catagory from the left.</p>
+
+                    <div id="pageination">
+                        <?php
+                        $sql = "SELECT COUNT(*) as count FROM products;";
+                        $query_all = $db->prepare($sql);
+                        if ($query_all->execute()) {
+                            $query_arr = $query_all->fetch();
+                            $prod_count = $query_arr['count'];
+                            $page_count = ceil($prod_count / $perPage);
+                            $button_gp = "<div class='btn-group' role='group' aria-label='Page Group'>";
+                            for ($i = 1; $i <= $page_count; $i++) {
+                                $button_gp .= "<button type='button' class='btn btn-secondary' onclick='show_page($i)'>$i</button>";
+                            }
+                            $button_gp .= "</div>";
+                            echo $button_gp;
+                        }
+                        ?>
+                    </div>
+
+                    <div class="itemlist">
+                        <ul class="itemtable">
+                        </ul>
+                    </div>
                 </section>
             </div>
         </div>
+        <input id="hid_currentCat" value="<?php echo htmlspecialchars($currentCat)?>" type="hidden"/>
+        <input id="hid_perPage" value="<?php echo htmlspecialchars($perPage)?>" type="hidden"/>
+        <script src="/lib/show_prod.js"></script>
         <script src="/lib/add_prod.js"></script>
     </body>
 </html>

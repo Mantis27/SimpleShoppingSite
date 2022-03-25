@@ -7,7 +7,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
         <link rel="stylesheet" href="style_item.css" >
-        <title>IERG4210 Project</title>
+        
         <?php 
             $db = new PDO('sqlite:/var/www/cart.db'); 
             $prod_pid = $_REQUEST["item"];
@@ -30,6 +30,7 @@
                 $auth_email = "GUEST";
             }
         ?>
+        <title>IERG4210 Project - <?php echo htmlspecialchars($prod_name)?></title>
     </head>
     <body>
         <div class="container">

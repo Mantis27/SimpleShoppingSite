@@ -62,9 +62,15 @@
                         <p class="linktext">
                             <a href="/index.php">Main</a> > <a href="#">
                                 <?php 
-                                    $query_all = $db->query("SELECT name FROM categories WHERE catid = $currentCat;");
-                                    $head_res = $query_all->fetch();
-                                    echo htmlspecialchars($head_res["NAME"]);
+                                    $sql="SELECT name FROM categories WHERE catid = ?;";
+                                    $q = $db->prepare($sql);
+                                    $currentCat_tmp = filter_var($currentCat, FILTER_SANITIZE_NUMBER_INT);
+                                    $q->bindParam(1, $currentCat_tmp, PDO::PARAM_INT);
+                                    if ($q->execute()) {
+                                        $head_res = $q->fetch();
+                                        echo htmlspecialchars($head_res["NAME"]);
+                                    }
+                                    
                                 ?>
                             </a>
                         </p>       
@@ -73,15 +79,20 @@
                     <div class="itemlist">
                         <ul class="itemtable">
                             <?php
-                                $query_all = $db->query("SELECT pid, name, price FROM products WHERE catid = $currentCat;");
-                                $prod_res = $query_all->fetchAll();
-                                foreach($prod_res as $prod_element) {
-                                    $pid = $prod_element["PID"];
-                                    $prod_name = $prod_element["NAME"];
-                                    $prod_price = $prod_element["PRICE"];
-                                    ?>
-                                    <li><a href="/Items/index.php?item=<?php echo urlencode($pid); ?>"><img src="/Resources/Item_Photo/<?php echo htmlspecialchars($pid); ?>.jpg"/><br><?php echo htmlspecialchars($prod_name); ?></a><br>$<?php echo htmlspecialchars($prod_price); ?> <button onclick="add_to_cart(<?php echo htmlspecialchars($pid); ?>)">Add</button></li>
-                                    <?php
+                                $sql = "SELECT pid, name, price FROM products WHERE catid = ?;";
+                                $query_all = $db->prepare($sql);
+                                $currentCat_tmp = filter_var($currentCat, FILTER_SANITIZE_NUMBER_INT);
+                                $query_all->bindParam(1, $currentCat_tmp, PDO::PARAM_INT);
+                                if ($query_all->execute()) {
+                                    $prod_res = $query_all->fetchAll();
+                                    foreach($prod_res as $prod_element) {
+                                        $pid = $prod_element["PID"];
+                                        $prod_name = $prod_element["NAME"];
+                                        $prod_price = $prod_element["PRICE"];
+                                        ?>
+                                        <li><a href="/Items/index.php?item=<?php echo urlencode($pid); ?>"><img src="/Resources/Item_Photo/<?php echo htmlspecialchars($pid); ?>.jpg"/><br><?php echo htmlspecialchars($prod_name); ?></a><br>$<?php echo htmlspecialchars($prod_price); ?> <button onclick="add_to_cart(<?php echo htmlspecialchars($pid); ?>)">Add</button></li>
+                                        <?php
+                                    }                                    
                                 }
                             ?>
                         </ul>

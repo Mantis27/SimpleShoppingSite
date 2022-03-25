@@ -11,13 +11,18 @@
         <?php 
             $db = new PDO('sqlite:/var/www/cart.db'); 
             $prod_pid = $_REQUEST["item"];
-            $query_all = $db->query("SELECT catid, name, price, description, stock FROM products WHERE pid = $prod_pid;");
-            $head_res = $query_all->fetch();
-            $prod_catid = $head_res["CATID"];
-            $prod_name = $head_res["NAME"];
-            $prod_price = $head_res["PRICE"];
-            $prod_desc = $head_res["DESCRIPTION"];
-            $prod_stock = $head_res["STOCK"];
+            $prod_pid_tmp = filter_var($prod_pid, FILTER_SANITIZE_NUMBER_INT);
+            $sql = "SELECT catid, name, price, description, stock FROM products WHERE pid = ?;";
+            $query_all = $db->prepare($sql);
+            $query_all->bindParam(1, $prod_pid_tmp, PDO::PARAM_INT);
+            if ($query_all->execute()) {
+                $head_res = $query_all->fetch();
+                $prod_catid = $head_res["CATID"];
+                $prod_name = $head_res["NAME"];
+                $prod_price = $head_res["PRICE"];
+                $prod_desc = $head_res["DESCRIPTION"];
+                $prod_stock = $head_res["STOCK"];
+            }
             include_once('../lib/auth.php');
             $auth_email = auth();
             if (!$auth_email) {
@@ -68,9 +73,14 @@
                         <p class="linktext">
                             <a href="/index.php">Main</a> > <a href="/Catagory/index.php?cat=<?php echo urlencode($prod_catid) ?>">
                             <?php 
-                                    $query_all = $db->query("SELECT name FROM categories WHERE catid = $prod_catid;");
-                                    $headcat_res = $query_all->fetch();
-                                    echo htmlspecialchars($headcat_res["NAME"]);
+                                    $sql="SELECT name FROM categories WHERE catid = ?;";
+                                    $q = $db->prepare($sql);
+                                    $currentCat_tmp = filter_var($prod_catid, FILTER_SANITIZE_NUMBER_INT);
+                                    $q->bindParam(1, $currentCat_tmp, PDO::PARAM_INT);
+                                    if ($q->execute()) {
+                                        $head_res = $q->fetch();
+                                        echo htmlspecialchars($head_res["NAME"]);
+                                    }
                                 ?>
                             </a> > <a href="#"><?php echo $prod_name; ?></a>
                         </p>       

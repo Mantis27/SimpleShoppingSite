@@ -30,7 +30,7 @@ function ierg4210_user_login() {
     $email = filter_var($email, FILTER_SANITIZE_EMAIL);
     $o_pw = $_POST["fpw"];
     $o_pw = filter_var($o_pw, FILTER_SANITIZE_STRING);
-    $q->bindParam(1, $email);
+    $q->bindParam(1, $email, PDO::PARAM_STR);
     if ($q->execute()) {
         $result = $q->fetch();
         $login_result = false;
@@ -86,7 +86,7 @@ function ierg4210_change_pw() {
     $email = filter_var($email, FILTER_SANITIZE_EMAIL);
     $o_pw = $_POST["fopw"];
     $o_pw = filter_var($o_pw, FILTER_SANITIZE_STRING);
-    $q->bindParam(1, $email);
+    $q->bindParam(1, $email, PDO::PARAM_STR);
     if ($q->execute()) {
         $result = $q->fetch();
         $login_result = false;
@@ -104,9 +104,9 @@ function ierg4210_change_pw() {
         $n_pw = filter_var($n_pw, FILTER_SANITIZE_STRING);
         $salt = mt_rand();
         $ns_pw = hash_hmac('sha256', $n_pw, $salt);
-        $q->bindParam(1, $salt);
-        $q->bindParam(2, $ns_pw);
-        $q->bindParam(3, $email);
+        $q->bindParam(1, $salt, PDO::PARAM_STR);
+        $q->bindParam(2, $ns_pw, PDO::PARAM_STR);
+        $q->bindParam(3, $email, PDO::PARAM_STR);
         if ($q->execute()) {
             $change_result = true;
         }

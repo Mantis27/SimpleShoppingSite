@@ -17,7 +17,11 @@ if (isset($_POST["cart_storage"])) {
         }
         else {
             // is a pid
-            $query_all = $db->query("SELECT name, price FROM products WHERE pid = $key;");
+            $sql = "SELECT name, price FROM products WHERE pid = ?;";
+            $query_all = $db->prepare($sql);
+            $key_tmp = filter_var($key, FILTER_SANITIZE_NUMBER_INT);
+            $query_all->bindParam(1, $key_tmp, PDO::PARAM_INT);
+            $query_all->execute();
             $res = $query_all->fetch();
             $prod_name = $res["NAME"];
             $prod_price = $res["PRICE"];

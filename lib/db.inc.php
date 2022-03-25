@@ -73,11 +73,11 @@ function ierg4210_prod_insert() {
         
         $sql="INSERT INTO products (catid, name, price, description, stock) VALUES (?, ?, ?, ?, ?)";
         $q = $db->prepare($sql);
-        $q->bindParam(1, $catid);
-        $q->bindParam(2, $name);
-        $q->bindParam(3, $price);
-        $q->bindParam(4, $desc);
-        $q->bindParam(5, $stock);
+        $q->bindParam(1, $catid, PDO::PARAM_INT);
+        $q->bindParam(2, $name, PDO::PARAM_STR);
+        $q->bindParam(3, $price, PDO::PARAM_STR);
+        $q->bindParam(4, $desc, PDO::PARAM_STR);
+        $q->bindParam(5, $stock, PDO::PARAM_INT);
         $q->execute();
         $lastId = $db->lastInsertId();
         
@@ -111,7 +111,7 @@ function ierg4210_cat_insert() {
     $name = $_POST["name"];
     $name = filter_var($name, FILTER_SANITIZE_STRING);
 
-    $q->bindParam(1, $name);
+    $q->bindParam(1, $name, PDO::PARAM_STR);
     $q->execute();
     header('Location: admin.php');
     exit();
@@ -137,8 +137,8 @@ function ierg4210_cat_edit(){
     if (!filter_var($catid, FILTER_VALIDATE_INT))
         throw new Exception("invalid-catid");
 
-    $q->bindParam(1, $name);
-    $q->bindParam(2, $catid);
+    $q->bindParam(1, $name, PDO::PARAM_STR);
+    $q->bindParam(2, $catid, PDO::PARAM_INT);
     $q->execute();
     header('Location: admin.php');
     exit();
@@ -160,7 +160,7 @@ function ierg4210_cat_delete(){
     if (!filter_var($catid, FILTER_VALIDATE_INT))
         throw new Exception("invalid-catid");
 
-    $q->bindParam(1, $catid);
+    $q->bindParam(1, $catid, PDO::PARAM_INT);
     $q->execute();
     header('Location: admin.php');
     exit();
@@ -179,7 +179,7 @@ function ierg4210_prod_delete_by_catid(){
     $pid = filter_var($pid, FILTER_SANITIZE_NUMBER_INT);
     if (!filter_var($pid, FILTER_VALIDATE_INT))
         throw new Exception("invalid-pid");
-    $q->bindParam(1, $pid);
+    $q->bindParam(1, $pid, PDO::PARAM_INT);
     if (unlink("/var/www/html/Resources/Item_Photo/".$pid.".jpg")) {
         $q->execute();
         header('Location: admin.php');
@@ -223,7 +223,7 @@ function ierg4210_prod_edit(){
     $pid = filter_var($pid, FILTER_SANITIZE_NUMBER_INT);
     if (!filter_var($pid, FILTER_VALIDATE_INT))
         throw new Exception("invalid-pid");
-    $q->bindParam(1, $pid);
+    $q->bindParam(1, $pid, PDO::PARAM_INT);
     if (unlink("/var/www/html/Resources/Item_Photo/".$pid.".jpg")) {
         $q->execute(); //detele record
 
@@ -250,12 +250,12 @@ function ierg4210_prod_edit(){
             
             $sql="INSERT INTO products (pid, catid, name, price, description, stock) VALUES (?, ?, ?, ?, ?, ?)";
             $q = $db->prepare($sql);
-            $q->bindParam(1, $pid);
-            $q->bindParam(2, $catid);
-            $q->bindParam(3, $name);
-            $q->bindParam(4, $price);
-            $q->bindParam(5, $desc);
-            $q->bindParam(6, $stock);
+            $q->bindParam(1, $pid, PDO::PARAM_INT);
+            $q->bindParam(2, $catid, PDO::PARAM_INT);
+            $q->bindParam(3, $name, PDO::PARAM_STR);
+            $q->bindParam(4, $price, PDO::PARAM_STR);
+            $q->bindParam(5, $desc, PDO::PARAM_STR);
+            $q->bindParam(6, $stock, PDO::PARAM_INT);
             $q->execute();
             
             // Note: Take care of the permission of destination folder (hints: current user is apache)

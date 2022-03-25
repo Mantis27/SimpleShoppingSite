@@ -32,7 +32,6 @@ The directory structure would be as following (as in phase 3):
 │   ├── show_items.php
 │   ├── show_prod.js
 │   └── store_items.php
-├── README.md
 ├── admin-process.php
 ├── admin.php
 ├── auth-process.php

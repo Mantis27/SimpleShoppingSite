@@ -17,13 +17,14 @@
                 // false, fake/no cookie
                 $auth_email = "GUEST";
             }
+            $perPage = 2;
         ?>
 
     </head>
     <body>
         <div class="container">
             <nav class="navbar navbar-light bg-light">
-                <a class="navbar-brand" href="#">Andy's Simple Shopping Mall</a>
+                <a class="navbar-brand" href="/">Andy's Simple Shopping Mall</a>
                 <p class="navbar-text"><a href="/admin.php">Admin Page</a></p>
                 <p class="navbar-text">Login-ed as: <?php echo htmlspecialchars($auth_email); ?></p>
                 <?php
@@ -75,26 +76,30 @@
                             </a>
                         </p>       
                     </div>
+                    <div id="pageination">
+                        <p>
+                        <?php
+                        $sql = "SELECT COUNT(*) as count FROM products WHERE catid = ?;";
+                        $query_all = $db->prepare($sql);
+                        $currentCat_tmp = filter_var($currentCat, FILTER_SANITIZE_NUMBER_INT);
+                        $query_all->bindParam(1, $currentCat_tmp, PDO::PARAM_INT);
+                        if ($query_all->execute()) {
+                            $query_arr = $query_all->fetch();
+                            $prod_count = $query_arr['count'];
+                            $page_count = ceil($prod_count / $perPage);
+                            $button_gp = "<div class='btn-group' role='group' aria-label='Page Group'>";
+                            for ($i = 1; $i <= $page_count; $i++) {
+                                $button_gp .= "<button type='button' class='btn btn-secondary' onclick='show_page($i)'>$i</button>";
+                            }
+                            $button_gp .= "</div>";
+                            echo $button_gp;
+                        }
+                        ?>
+                        </p>
+                    </div>
 
                     <div class="itemlist">
                         <ul class="itemtable">
-                            <?php
-                                $sql = "SELECT pid, name, price FROM products WHERE catid = ?;";
-                                $query_all = $db->prepare($sql);
-                                $currentCat_tmp = filter_var($currentCat, FILTER_SANITIZE_NUMBER_INT);
-                                $query_all->bindParam(1, $currentCat_tmp, PDO::PARAM_INT);
-                                if ($query_all->execute()) {
-                                    $prod_res = $query_all->fetchAll();
-                                    foreach($prod_res as $prod_element) {
-                                        $pid = $prod_element["PID"];
-                                        $prod_name = $prod_element["NAME"];
-                                        $prod_price = $prod_element["PRICE"];
-                                        ?>
-                                        <li><a href="/Items/index.php?item=<?php echo urlencode($pid); ?>"><img src="/Resources/Item_Photo/<?php echo htmlspecialchars($pid); ?>.jpg"/><br><?php echo htmlspecialchars($prod_name); ?></a><br>$<?php echo htmlspecialchars($prod_price); ?> <button onclick="add_to_cart(<?php echo htmlspecialchars($pid); ?>)">Add</button></li>
-                                        <?php
-                                    }                                    
-                                }
-                            ?>
                         </ul>
                     </div>
                 </section>
@@ -102,6 +107,9 @@
             </div>
     
         </div>
+        <input id="hid_currentCat" value="<?php echo htmlspecialchars($currentCat)?>" type="hidden"/>
+        <input id="hid_perPage" value="<?php echo htmlspecialchars($perPage)?>" type="hidden"/>
+        <script src="/lib/show_prod.js"></script>
         <script src="/lib/add_prod.js"></script>
     </body>
 </html>

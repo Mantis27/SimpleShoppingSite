@@ -42,3 +42,5 @@ The directory structure would be as following (as in phase 3):
 ├── logout.php
 └── style1.css
 ```
+
+cart.db should be in /var/www/

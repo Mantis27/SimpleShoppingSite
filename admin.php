@@ -23,7 +23,14 @@ foreach ($prod_res as $prod_value){
 ?>
 
 <html>
+    <head>
+        <link rel="stylesheet" href="stylefortable.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <title>Admin Page</title>
+    </head>
+    <body>
     <h2>Admin Page</h2>
+    <a href="/index.php">Back to Shop</a>
     <fieldset id="field_prod_insert">
         <legend>Product Insert</legend>
         <form id="prod_insert" method="POST" action="admin-process.php?action=<?php echo urlencode($action = 'prod_insert');?>" enctype="multipart/form-data">
@@ -105,6 +112,9 @@ foreach ($prod_res as $prod_value){
             <input type="hidden" name="nonce" value="<?php echo csrf_getNonce($action); ?>"/>
         </form>
     </fieldset>
-    <a href="/index.php">Back to Shop</a>
+    
+    <div id="ordertable"></div>
+
     <script src="/lib/admin-script.js"></script>
+    </body>
 </html>

@@ -25,6 +25,19 @@ if (!$auth_email) {
           return /^\d+$/.test(value);
       }
 
+      let keys_i = Object.keys(localStorage), i_i = keys_i.length, count_i = 0;
+      while (i_i--) {
+        if (isNumeric(keys_i[i_i])) {
+          count_i++;
+        }
+      }
+      if (count_i <= 0) {
+        alert(`You need at least 1 item to checkout.`);
+        window.location.replace('https://secure.s13.ierg4210.ie.cuhk.edu.hk/index.php');
+      }
+
+
+
       function getItemsInfo(itemID_s) {
         return new Promise((resolve) => {
           $.ajax({
@@ -145,12 +158,17 @@ if (!$auth_email) {
             console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
             const transaction = orderData.purchase_units[0].payments.captures[0];
             alert(`Transaction ${transaction.status}: ${transaction.id}\n\nSee console for all available details`);
+            
             // When ready to go live, remove the alert and show a success message within this page. For example:
             // const element = document.getElementById('paypal-button-container');
             // element.innerHTML = '<h3>Thank you for your payment!</h3>';
             // Or go to another URL:  actions.redirect('thank_you.html');
 
             // remember to clear storage
+            let paypal_reserve = localStorage.getItem('__paypal_storage__');
+            localStorage.clear();
+            localStorage.setItem('__paypal_storage__',paypal_reserve);
+            window.location.replace('https://secure.s13.ierg4210.ie.cuhk.edu.hk/index.php');
           });
         }
       }).render('#paypal-button-container');

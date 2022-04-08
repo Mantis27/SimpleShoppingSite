@@ -19,7 +19,8 @@ if (isset($_POST["query_order"])) {
         $status = $value["STATUS"];
         $txnid = $value["TXNID"];
 
-        $result .= "<tr><td>$oid</td><td>$user</td><td>$testingg</td><td>$status</td><td>$txnid</td></tr>";
+
+        $result .= "<tr><td>$oid</td><td>$user</td><td>$jsonstring</td><td>$status</td><td>$txnid</td></tr>";
     }
 
 

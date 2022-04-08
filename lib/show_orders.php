@@ -11,7 +11,7 @@ if (isset($_POST["query_order"])) {
     $res = $q->fetchAll();
 
     $result = "<p>Table showing last $query_amount orders.</p>";
-    $result .= "<table id='ordertable_table'><tr><th>oid</th><th>user</th><th>jsonstring</th><th>status</th><th>txnid</th></tr>";
+    $result .= "<table id='ordertable_table'><tr><th>OrderID</th><th>User</th><th>Items</th><th>Status</th><th>txnID</th></tr>";
     foreach ($res as $value) {
         $oid = $value["OID"];
         $user = $value["EMAIL"];
@@ -19,8 +19,20 @@ if (isset($_POST["query_order"])) {
         $status = $value["STATUS"];
         $txnid = $value["TXNID"];
 
-
-        $result .= "<tr><td>$oid</td><td>$user</td><td>$jsonstring</td><td>$status</td><td>$txnid</td></tr>";
+        $item_result = "<ul>";
+        $jsonobj = json_decode($jsonstring, true);
+        $total_cost = $jsonobj["purchase_units"][0]["amount"]["value"];
+        $item_arr = $jsonobj["purchase_units"][0]["items"];
+        foreach ($item_arr as $item) {
+            $item_name = $item["name"];
+            $item_quan = $item["quantity"];
+            $item_cost = $item["unit_amount"]["value"];
+            $item_totcost = intval($item_quan) * floatval($item_cost);
+            $item_result .= "<li>\"$item_name\" quantity:$item_quan price:$item_cost total:$item_totcost</li>";
+        }
+        $item_result .= "<li>Total: $total_cost</li></ul>";
+        
+        $result .= "<tr><td>$oid</td><td>$user</td><td>$item_result</td><td>$status</td><td>$txnid</td></tr>";
     }
 
 

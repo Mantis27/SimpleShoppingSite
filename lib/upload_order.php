@@ -15,8 +15,8 @@ if (isset($_POST["orderList"])) {
     $q->bindParam(1, $email, PDO::PARAM_STR);
     $q->bindParam(2, $digest, PDO::PARAM_STR);
     $q->bindParam(3, $salt, PDO::PARAM_STR);
-    $jsonstring = filter_var($orderList, FILTER_SANITIZE_STRING);
-    $q->bindParam(4, $jsonstring, PDO::PARAM_STR);
+    //$jsonstring = filter_var($orderList, FILTER_SANITIZE_STRING);
+    $q->bindParam(4, $orderList, PDO::PARAM_STR);
     $q->bindParam(5, $status, PDO::PARAM_STR);
 
 

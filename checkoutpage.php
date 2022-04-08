@@ -135,7 +135,7 @@ if (!$auth_email) {
           let preJsonObj = {};
           await obtainObjectFromLocalStorage().then(data => {
             Object.assign(preJsonObj, data);
-            console.log(preJsonObj);
+            //console.log(preJsonObj);
           })
           let order_details = await getFromServer(preJsonObj)
             .then(data => JSON.parse(data));
@@ -155,7 +155,7 @@ if (!$auth_email) {
         onApprove: (data, actions) => {
           return actions.order.capture().then(function(orderData) {
             // Successful capture! For dev/demo purposes:
-            console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+            //console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
             const transaction = orderData.purchase_units[0].payments.captures[0];
             //alert(`Transaction ${transaction.status}: ${transaction.id}\n\nSee console for all available details`);
             
@@ -168,7 +168,7 @@ if (!$auth_email) {
             let paypal_reserve = localStorage.getItem('__paypal_storage__');
             localStorage.clear();
             localStorage.setItem('__paypal_storage__',paypal_reserve);
-            window.location.replace('https://secure.s13.ierg4210.ie.cuhk.edu.hk/index.php');
+            window.location.replace('https://secure.s13.ierg4210.ie.cuhk.edu.hk/payment-success.html');
           });
         }
       }).render('#paypal-button-container');

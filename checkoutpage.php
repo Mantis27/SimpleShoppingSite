@@ -150,7 +150,7 @@ if (!$auth_email) {
             // element.innerHTML = '<h3>Thank you for your payment!</h3>';
             // Or go to another URL:  actions.redirect('thank_you.html');
 
-            // remember to clear storage and preJsonObj
+            // remember to clear storage
           });
         }
       }).render('#paypal-button-container');

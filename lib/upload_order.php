@@ -8,7 +8,7 @@ if (isset($_POST["orderList"])) {
     $digest = hash_hmac('sha256', $orderList, $salt);
     $status = "PENDING";
     
-    $sql = "INSERT INTO orders (email, digest, salt, jsonstring, status) VALUES (?, ?, ?, ?, ?);";
+    $sql = "INSERT INTO orders (email, digest, salt, jsonstring, status, txnid) VALUES (?, ?, ?, ?, ?, 'none');";
     $q = $db->prepare($sql);
 
     $email = filter_var($_POST["userEmail"], FILTER_SANITIZE_STRING);

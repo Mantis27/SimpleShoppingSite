@@ -51,20 +51,19 @@ foreach ($_POST as $parm => $var)
 
 // STEP 3 - Extract the data PayPal IPN has sent us, into local variables 
 
-$item_name        = $_POST['item_name'];
+$item_name        = $_POST['item_name1'];
 $item_number      = $_POST['item_number'];
 $payment_status   = $_POST['payment_status'];
 $payment_amount   = $_POST['mc_gross'];
 $payment_currency = $_POST['mc_currency'];
 $txn_id           = $_POST['txn_id'];
+$txn_type         = $_POST['txn_type'];
 $receiver_email   = $_POST['receiver_email'];
 $payer_email      = $_POST['payer_email'];
 $record_id	 	  = $_POST['custom'];
-  
-$sql = "INSERT INTO TESTINGG (OID, TID) VALUES (NULL, ?)";
-$q = $db->prepare($sql);
-$q->bindParam(1, $resp);
-$q->execute();
+$invoice_id	 	  = $_POST['invoice']; // the id in db
+$number_of_items  = $_POST['num_cart_items'];
+
 // Right.. we've pre-pended "cmd=_notify-validate" to the same data that PayPal sent us (I've just shown some of the data PayPal gives us. A complete list
 // is on their developer site.  Now we need to send it back to PayPal via HTTP.  To do that, we create a file with the right HTTP headers followed by 
 // the data block we just createdand then send the whole bally lot back to PayPal using fsockopen
@@ -108,64 +107,95 @@ else {
 		$readresp = fgets ($fh, 1024);
 		if (strcmp (trim($readresp), "VERIFIED") == 0) 
 		{
-				/*
- 				Hurrah. Payment notification was both genuine and verified
+			$sql = "INSERT INTO TESTINGG (OID, TID) VALUES (NULL, 'ABC1')";
+			$db->exec($sql);
 
-				Now this is where we record a record such that when our client gets returned to our success.php page (which might be momentarily
-  				(remember, PayPal tries to stall users for 10 seconds after purchase so the IPN gets through first) or much later, we can see if the
-				payment completed; and if it did, we can release the download.  You can go about this synchronisation between listener.php
-				and success.php in many different ways.  How you do it mostly depends on your need for security; but here is one way I do it:
+			$order_object = [
+				'purchase_units' => array (
+					0 => [
+						'amount' => [
+							'currency_code' => $payment_currency,
+							'value' => $payment_amount,
+							'breakdown' => [
+								'item_total'=> [
+									'currency_code' => $payment_currency,
+									'value' => $payment_amount
+								]
 
-				When the client initiates the purchase by clicking the "buy" button, I write a new "unconfirmed" payment record in my Payments
-				table; this includes all the details of what they wish to purchase and their session-ID.  I then pass the record "id" of this pending entry in the CUSTOM
-				parameter to PayPal when it processes my site visitor tranaction.
+							]
+						],
+						'items' => array (
+							
+						)
 
-				After PayPal processes the transation, it doesn't return the client to your site immediately; it conveniently stalls them for around
-				10 seconds, during which it quickly calls your listener program (this program) to give it the good news.  I then extract the record_id
-				that was inserted in the Payments table database that was created just before the client was sent to PayPal, but now I know that
-				the payment is VERIFIED, so I can update the record in the PAYMENTS table from "Pending" to "Completed".
+					]
+				)
+			];
+			for ($i = 1; $i <= $number_of_items; $i++) {
+				// create item object
+				$item_name = $_POST["item_name".$i];
+				$item_quan = $_POST["quantity".$i];
+				$item_cost = $_POST["mc_gross".$i];
+				$item_object = [
+					'name' => $item_name,
+					'quantity' => $item_quan,
+					'unit_amount' => [
+						'currency_code' => $payment_currency,
+						'value' => $item_cost
+					]
+				];
+				array_push($order_object['purchase_units'][0]['items'], $item_object);
+			}
+			$order_object_json = json_encode($order_object);
 
-				When (or if) the user returns to my "Auto Return" success.php page, I query the database for all "Completed" transactions with the
-				same Session_id, read the digital products that they have purchased and then release them as downloadable links in
-				success.php.
-
-				Yes, session_id is not totally reliable, but you could use cookies, or you could use a comprehensive user
-				registration, logon & password retrieval system that would give you the degree of "lock down" you require.  Your choice.
-				*/
-			/*$sql = "INSERT INTO TESTINGG (OID, TID) VALUES (NULL, ?)";;
+			$sql = "SELECT * FROM orders WHERE OID=?";
 			$q = $db->prepare($sql);
-			$q->bindParam(1, 'TESTING99999');
-			$q->execute();*/
-			$sql = "INSERT INTO TESTINGG (OID, TID) VALUES (NULL, 'ABC')";
+			$q->bindParam(1, $invoice_id);
+			$q->execute();
+			$res = $q->fetch();
+            $salt = $res["SALT"];
+			$target_digest = $res["DIGEST"];
+			$old_txnid = $res["TXNID"];
+
+			// check txnid, txntype
+			if (strcmp($txn_type, "cart") == 0) {
+				if (strcmp($old_txnid, "none") == 0) {
+					// first time process
+					// check digest
+					$new_digest = hash_hmac('sha256', $order_object_json, $salt);
+					if (strcmp($target_digest, $new_digest)) {
+						$sql = "INSERT INTO TESTINGG (OID, TID) VALUES (NULL, 'SAMEEE')";
+						$db->exec($sql);
+
+						$sql = "UPDATE orders SET STATUS=?, TXNID=? WHERE OID=?";
+						$q = $db->prepare($sql);
+						$q->bindParam(1, $payment_status);
+						$q->bindParam(2, $txn_id);
+						$q->bindParam(3, $invoice_id);
+						$q->execute();
+					
+					}
+				}
+			}
+
+
+
+
+
+
+			$sql = "INSERT INTO TESTINGG (OID, TID) VALUES (NULL, 'ABC2')";
 			$db->exec($sql);
 		}
  
 		else if (strcmp (trim($readresp), "INVALID") == 0) 
 		{
 			// Man alive!  A hacking attempt?
-			/*
-			$sql = "INSERT INTO TESTINGG (OID, TID) VALUES (NULL, ?)";;
-			$q = $db->prepare($sql);
-			$q->bindParam(1, 'TESTING12');
-			$q->execute();*/
+
 
  			$sql = "INSERT INTO TESTINGG (OID, TID) VALUES (NULL, 'Doe')";
 			$db->exec($sql);
 		}
 			
-		//else 
-		//{			
-			//$sql = "INSERT INTO testingg (name, surname, sex) VALUES (?,?,?)";
-			//$q = $db->prepare($sql);
-			//$q->bindParam(1, 'TESTING12');
-			//$q->execute();
-
-			//$sql = "INSERT INTO TESTINGG (OID, TID) VALUES (NULL, ?)";
-			//$q = $db->prepare($sql);
-			//$q->bindParam(1, $readresp);
-			//$q->execute();
-			//$db->exec($sql);
-		//}
 		
 	}
 	fclose ($fh);
@@ -175,5 +205,3 @@ else {
 // STEP 6 - Pour yourself a cold one.
 //
 //
-
-?>

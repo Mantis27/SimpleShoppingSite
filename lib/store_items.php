@@ -31,7 +31,7 @@ if (isset($_POST["cart_storage"])) {
         }
     }
     $responseStr .= "<li>TOTAL: $$totalSum</li>";
-    $responseStr .= "<li><button class='checkout'>Checkout</button></li>";
+    $responseStr .= "<li><button class='checkout' onclick='window.location.href=\"/checkoutpage.php\"'>Checkout</button></li>";
     $responseStr .= "</ul>";
     $responseStr .= "<p class='shorttext'>Shopping List $$totalSum</p>";
     echo $responseStr;

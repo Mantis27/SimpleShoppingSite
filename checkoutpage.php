@@ -18,6 +18,7 @@ if (!$auth_email) {
     <!-- Replace "test" with your own sandbox Business account app client ID -->
     <script src="https://www.paypal.com/sdk/js?client-id=AUqbIitXVo-JFfxcA4EVAkq4dxevLk998scM5r3cKpI_Wov_6-Stxh9XIeOY1t9PNmeaZb8dDLR_pDy-&currency=HKD"></script>
     <!-- Set up a container element for the button -->
+    <a href="/index.php">Back to Shop</a>
     <div id="paypal-button-container"></div>
     <script>
       const merchEmail = "sb-agssq15570287@business.example.com";

@@ -91,11 +91,7 @@ if (!$fh) {
 	// Uh oh. This means that we have not been able to get thru to the PayPal server.  It's an HTTP failure
 	//
 	// You need to handle this here according to your preferred business logic.  An email, a log message, a trip to the pub..
-	$sql = "INSERT INTO TESTINGG (OID, TID) VALUES (NULL, ?)";
-	$q = $db->prepare($sql);
-	$test = "Arrived here";
-	$q->bindParam(1, $test);
-	$q->execute();
+
 } 
 		   
 // Connection opened, so spit back the response and get PayPal's view whether it was an authentic notification		   
@@ -107,8 +103,6 @@ else {
 		$readresp = fgets ($fh, 1024);
 		if (strcmp (trim($readresp), "VERIFIED") == 0) 
 		{
-			$sql = "INSERT INTO TESTINGG (OID, TID) VALUES (NULL, 'ABC1')";
-			$db->exec($sql);
 
 			$order_object = [
 				'purchase_units' => array (
@@ -121,13 +115,11 @@ else {
 									'currency_code' => $payment_currency,
 									'value' => $payment_amount
 								]
-
 							]
 						],
 						'items' => array (
 							
 						)
-
 					]
 				)
 			];
@@ -164,8 +156,6 @@ else {
 					// check digest
 					$new_digest = hash_hmac('sha256', $order_object_json, $salt);
 					if (strcmp($target_digest, $new_digest)) {
-						$sql = "INSERT INTO TESTINGG (OID, TID) VALUES (NULL, 'SAMEEE')";
-						$db->exec($sql);
 
 						$sql = "UPDATE orders SET STATUS=?, TXNID=? WHERE OID=?";
 						$q = $db->prepare($sql);
@@ -179,21 +169,12 @@ else {
 			}
 
 
-
-
-
-
-			$sql = "INSERT INTO TESTINGG (OID, TID) VALUES (NULL, 'ABC2')";
-			$db->exec($sql);
 		}
  
 		else if (strcmp (trim($readresp), "INVALID") == 0) 
 		{
 			// Man alive!  A hacking attempt?
 
-
- 			$sql = "INSERT INTO TESTINGG (OID, TID) VALUES (NULL, 'Doe')";
-			$db->exec($sql);
 		}
 			
 		

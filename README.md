@@ -11,7 +11,7 @@ Two users available, as in Phase 4:
 - admin@mantis.com, dj007
 - normal1@mantis.com, normal1
 
-The directory structure would be as following (as in phase 3):
+The directory structure would be as following (as in phase 5):
 ```bash
 /var/www/html/
 ├── Catagory
@@ -27,19 +27,28 @@ The directory structure would be as following (as in phase 3):
 │   ├── add_prod.js
 │   ├── admin-script.js
 │   ├── auth.php
+│   ├── checkout_items.php
 │   ├── db.inc.php
 │   ├── nonce.php
 │   ├── show_items.php
+│   ├── show_orders.php
 │   ├── show_prod.js
-│   └── store_items.php
+│   ├── store_items.php
+│   ├── upload_order.php
+│   └── user_portal_script.js
 ├── admin-process.php
 ├── admin.php
 ├── auth-process.php
 ├── changepw.php
+├── checkoutpage.php
 ├── index.php
+├── listener.php
 ├── login.php
 ├── logout.php
-└── style1.css
+├── payment-success.html
+├── style1.css
+├── stylefortable.css
+└── userportal.php
 ```
 
 cart.db should be in /var/www/

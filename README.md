@@ -1,17 +1,14 @@
-# IERG4210_Proj
-This is a project for IERG4210 by HO Tsz Ngong (1155124840).\
-Access the webpage with following links:
-- [http://54.163.7.245/](http://54.163.7.245/)
-- [http://s13.ierg4210.ie.cuhk.edu.hk/](http://s13.ierg4210.ie.cuhk.edu.hk/)
-- [https://secure.s13.ierg4210.ie.cuhk.edu.hk/](https://secure.s13.ierg4210.ie.cuhk.edu.hk/)
+# Simple Shopping Site
+This is a project by HO Tsz Ngong.\
 
-To show that Ajax pagination is being implemented, the current setting is 2 items per pages.
+To show that Ajax pagination is being implemented, the current setting is 2 items per pages.\
+Paypal please use sandbox account.\
 
-Two users available, as in Phase 4:
+Two users available for now:
 - admin@mantis.com, dj007
 - normal1@mantis.com, normal1
 
-The directory structure would be as following (as in phase 5):
+The directory structure would be as following:
 ```bash
 /var/www/html/
 ├── Catagory

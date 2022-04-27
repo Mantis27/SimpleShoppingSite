@@ -1,8 +1,8 @@
 # Simple Shopping Site
-This is a project by HO Tsz Ngong.\
+This is a project by HO Tsz Ngong.
 
 To show that Ajax pagination is being implemented, the current setting is 2 items per pages.\
-Paypal please use sandbox account.\
+Please use sandbox Paypal account.
 
 Two users available for now:
 - admin@mantis.com, dj007

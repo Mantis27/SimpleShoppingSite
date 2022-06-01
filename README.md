@@ -1,5 +1,5 @@
 # Simple Shopping Site
-This is a project by HO Tsz Ngong.
+This is a project by HO Tsz Ngong, improved based on simple project previously done in IERG4210.
 
 To show that Ajax pagination is being implemented, the current setting is 2 items per pages.\
 Please use sandbox Paypal account.
